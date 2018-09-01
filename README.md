@@ -44,7 +44,6 @@ APIの中には、FatFsによるSDカードアクセス機能や、SC1602互換�
 
 
 なお、ファームウェアのソースファイルは [sdk/firmware/](sdk/firmware/) 配下にあります。ビルドするには GNU Arm Embedded Toolchain と、make や cat 等のLinuxコマンドが使える環境(Linux, MSYS, Cygwin 等)が必要です。
-
 firmwareディレクトリ内で make を実行してください。
 
 
