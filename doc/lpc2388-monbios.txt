@@ -93,7 +93,7 @@ lpc2388-bios/
 ------------------------------------------------------------------------------
 ＊ ファームウェアの書き込み ＊
 
-ファームウェア(src/firmware.hex)をlpcwrtでLPC2388のフラッシュに書き込む方法。
+ファームウェア(sdk/firmware.hex)をlpcwrtでLPC2388のフラッシュに書き込む方法。
 
   lpcwrt.exe, lpcsp.exe, arm-none-eabi-objcopy.exe を準備。
   CQ-FRK-NXP-ARM基板を、JP1とJP2をショートした状態で電源ON(CP2012側USBを接続)。
@@ -109,14 +109,14 @@ lpc2388-bios/
       objcopy をチェックし、[Browse]ボタンで arm-none-eabi-objcopy.exe を指定
 
     Flashセクション
-      HEX/BIN File に firmware.hex (src にある)を指定
+      HEX/BIN File に firmware.hex (sdk にある)を指定
 
   以上を設定したら、CQ-FRK-NXP-ARM基板のJP2をOPENにして[Convert and Write]。
       リセット後、TeraTermで接続しEnterで「LPC2388 MON>」が表示されれば成功。
       起動中は、基板上のLED (Pin P1[18]) が5秒周期で点滅する。
 
 
-なお、ファームウェアのソースファイルは src/firmware/ 配下にある。ビルドするには GNU Arm Embedded Toolchain と、make や cat 等のLinuxコマンドが使える環境(Linux, MSYS, Cygwin 等)が必要。
+なお、ファームウェアのソースファイルは sdk/firmware/ 配下にある。ビルドするには GNU Arm Embedded Toolchain と、make や cat 等のLinuxコマンドが使える環境(Linux, MSYS, Cygwin 等)が必要。
 
 
 

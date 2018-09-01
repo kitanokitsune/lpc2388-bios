@@ -10,18 +10,17 @@
 
 ファームウェア（モニタプログラム）は、多くの機能をAPIとしてユーザープログラムに提供します。ユーザープログラムは多くの機能をAPI呼び出しで済ませることができるため、コードサイズを非常に小さくできます。
 
-APIの中には、FatFsによるSDカードアクセス機能や、SC1602互換のキャラクタLCDを操作
-する機能が含まれています。
+APIの中には、FatFsによるSDカードアクセス機能や、SC1602互換のキャラクタLCDを操作する機能が含まれています。
 
 
 ## 詳細
 
-テキストファイル doc/lpc2388-monbios.txt をご覧ください。
+テキストファイル [doc/lpc2388-monbios.txt](./doc/lpc2388-monbios.txt) をご覧ください。
 
 
 ## ファームウェアの書き込み
 
-ファームウェア(src/firmware.hex)をlpcwrtでLPC2388のフラッシュに書き込む方法。
+ファームウェア([sdk/firmware.hex](sdk/firmware.hex))をlpcwrtでLPC2388のフラッシュに書き込む方法。
 
   lpcwrt.exe, lpcsp.exe, arm-none-eabi-objcopy.exe を準備。  
   CQ-FRK-NXP-ARM基板を、JP1とJP2をショートした状態で電源ON(CP2012側USBを接続)。  
@@ -37,15 +36,23 @@ APIの中には、FatFsによるSDカードアクセス機能や、SC1602互換�
       objcopy をチェックし、[Browse]ボタンで arm-none-eabi-objcopy.exe を指定
 
     Flashセクション
-      HEX/BIN File に firmware.hex (src にある)を指定
+      HEX/BIN File に firmware.hex (sdk にある)を指定
 
   以上を設定したら、CQ-FRK-NXP-ARM基板のJP2をOPENにして[Convert and Write]。  
   書き込みが終わったら、リセットしてTeraTerm等で接続し、プロンプト「LPC2388 MON>」が表示されれば成功。  
   起動中は、基板上のLED (Pin P1[18]) が5秒周期で点滅する。
 
 
-なお、ファームウェアのソースファイルは src/firmware/ 配下にある。ビルドするには GNU Arm Embedded Toolchain と、make や cat 等のLinuxコマンドが使える環境(Linux, MSYS, Cygwin 等)が必要。
+なお、ファームウェアのソースファイルは [sdk/firmware/](sdk/firmware/) 配下にあります。ビルドするには GNU Arm Embedded Toolchain と、make や cat 等のLinuxコマンドが使える環境(Linux, MSYS, Cygwin 等)が必要です。
 
+firmwareディレクトリ内で make を実行してください。
+
+
+## アプリケーション開発方法
+
+本ファームウェア上で動作するアプリケーションを開発する場合は [sdk/application/](sdk/application/) のサンプルプログラムにある Makefile を利用してください。
+
+なお、Makefile の中に記述されているマクロ `PROJ_TOP_DIR` が [sdk](./sdk) ディレクトリを指している必要があります。
 
 
 ## 謝辞：
