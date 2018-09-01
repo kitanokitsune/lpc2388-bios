@@ -1,4 +1,4 @@
-# LPC2388 Monitor/BIOS
+# LPC2388 Monitor/BIOS/Application SDK
 
 <img src="./doc/CQ-NXPARM.jpg" height="300px">
 <img src="./doc/demo.png" height="300px">
