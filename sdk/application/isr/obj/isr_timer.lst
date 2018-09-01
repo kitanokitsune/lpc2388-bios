@@ -1,0 +1,139 @@
+   1              		.cpu arm7tdmi-s
+   2              		.eabi_attribute 20, 1	@ Tag_ABI_FP_denormal
+   3              		.eabi_attribute 21, 1	@ Tag_ABI_FP_exceptions
+   4              		.eabi_attribute 23, 3	@ Tag_ABI_FP_number_model
+   5              		.eabi_attribute 24, 1	@ Tag_ABI_align8_needed
+   6              		.eabi_attribute 25, 1	@ Tag_ABI_align8_preserved
+   7              		.eabi_attribute 26, 1	@ Tag_ABI_enum_size
+   8              		.eabi_attribute 30, 1	@ Tag_ABI_optimization_goals
+   9              		.eabi_attribute 34, 0	@ Tag_CPU_unaligned_access
+  10              		.eabi_attribute 18, 4	@ Tag_ABI_PCS_wchar_t
+  11              		.file	"isr_timer.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.align	2
+  16              		.global	Timer0Handler
+  17              		.syntax unified
+  18              		.arm
+  19              		.fpu softvfp
+  21              	Timer0Handler:
+  22              	.LFB1:
+  23              		.file 1 "isr_timer.c"
+  24              		@ isr_timer.c:22
+   1:isr_timer.c   **** /*
+   2:isr_timer.c   ****     タイマー割り込みのテスト
+   3:isr_timer.c   **** */
+   4:isr_timer.c   **** 
+   5:isr_timer.c   **** #include "isr_timer.h"
+   6:isr_timer.c   **** 
+   7:isr_timer.c   **** #define USE_NESTED_IRQ  1
+   8:isr_timer.c   **** 
+   9:isr_timer.c   **** 
+  10:isr_timer.c   **** /****************************************************/
+  11:isr_timer.c   **** #if USE_NESTED_IRQ
+  12:isr_timer.c   **** /****************************************************/
+  13:isr_timer.c   **** 
+  14:isr_timer.c   **** 
+  15:isr_timer.c   **** static void isr_led_toggle(void)
+  16:isr_timer.c   **** {
+  17:isr_timer.c   ****     FIO1PIN ^= 0x00040000; /* Toggle LED state */
+  18:isr_timer.c   **** }
+  19:isr_timer.c   **** 
+  20:isr_timer.c   **** /* Timer Handler Wrapper */
+  21:isr_timer.c   **** void Timer0Handler(void)
+  22:isr_timer.c   **** {
+  25              		.loc 1 22 0
+  26              		.cfi_startproc
+  27              		@ Interrupt Service Routine.
+  28              		@ args = 0, pretend = 0, frame = 0
+  29              		@ frame_needed = 0, uses_anonymous_args = 0
+  30              		@ link register save eliminated.
+  31              	@ BLOCK 2 freq:10000 seq:0
+  32              	@ PRED: ENTRY [100.0%]  (FALLTHRU)
+  33 0000 0C002DE9 		push	{r2, r3}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 2, -8
+  37              		.cfi_offset 3, -4
+  38              		@ isr_timer.c:23
+  23:isr_timer.c   ****     T0IR = 1;                /* Timer interrupt reset                */
+  39              		.loc 1 23 0
+  40 0004 0120A0E3 		mov	r2, #1
+  41 0008 4C309FE5 		ldr	r3, .L3
+  42 000c 002083E5 		str	r2, [r3]
+  43              		@ isr_timer.c:24
+  24:isr_timer.c   ****     _IRQ_SAVE_CONTEXT();     /* save context and enter svc mode      */
+  44              		.loc 1 24 0
+  45              		.syntax divided
+  46              	@ 24 "isr_timer.c" 1
+  47 0010 08002DE9 		STMFD SP!, {R3} 
+  48 0014 00304FE1 		MRS   R3, SPSR 
+  49 0018 08002DE9 		STMFD SP!, {R3} 
+  50 001c 13F021E3 		MSR   CPSR_c, #0x13 
+  51 0020 00402DE9 		STMFD SP!, {LR} 
+  52              	
+  53              	@ 0 "" 2
+  54              		.arm
+  55              		.syntax unified
+  56              	.LBB4:
+  57              	.LBB5:
+  58              		@ isr_timer.c:17
+  17:isr_timer.c   **** }
+  59              		.loc 1 17 0
+  60 0024 34209FE5 		ldr	r2, .L3+4
+  61 0028 CB3F12E5 		ldr	r3, [r2, #-4043]
+  62 002c 013723E2 		eor	r3, r3, #262144
+  63 0030 CB3F02E5 		str	r3, [r2, #-4043]
+  64              	.LBE5:
+  65              	.LBE4:
+  66              		@ isr_timer.c:26
+  25:isr_timer.c   ****     isr_led_toggle();     /* (user isr function)                  */
+  26:isr_timer.c   ****     _IRQ_RESTORE_CONTEXT();  /* back to irq mode and resotre context */
+  67              		.loc 1 26 0
+  68              		.syntax divided
+  69              	@ 26 "isr_timer.c" 1
+  70 0034 0040BDE8 		LDMFD SP!, {LR} 
+  71 0038 92F021E3 		MSR   CPSR_c, #0x92 
+  72 003c 0800BDE8 		LDMFD SP!, {R3} 
+  73 0040 03F06FE1 		MSR   SPSR_cxsf, R3 
+  74 0044 0800BDE8 		LDMFD SP!, {R3} 
+  75              	
+  76              	@ 0 "" 2
+  77              		@ isr_timer.c:28
+  27:isr_timer.c   **** 
+  28:isr_timer.c   ****     VICAddress = 0x00000000; /* IRQ acknowledge */
+  78              		.loc 1 28 0
+  79              		.arm
+  80              		.syntax unified
+  81 0048 0020A0E3 		mov	r2, #0
+  82 004c 0030E0E3 		mvn	r3, #0
+  83 0050 FF2003E5 		str	r2, [r3, #-255]
+  84              		@ isr_timer.c:29
+  29:isr_timer.c   **** }
+  85              		.loc 1 29 0
+  86 0054 0C00BDE8 		pop	{r2, r3}
+  87              	.LCFI1:
+  88              		.cfi_restore 3
+  89              		.cfi_restore 2
+  90              		.cfi_def_cfa_offset 0
+  91              	@ SUCC: EXIT [100.0%] 
+  92 0058 04F05EE2 		subs	pc, lr, #4
+  93              	.L4:
+  94              		.align	2
+  95              	.L3:
+  96 005c 004000E0 		.word	-536854528
+  97 0060 FFCFFF3F 		.word	1073729535
+  98              		.cfi_endproc
+  99              	.LFE1:
+ 101              	.Letext0:
+ 102              		.file 2 "c:\\users\\user\\desktop\\arm-dev\\arm-tools\\arm-none-eabi\\include\\machine\\_default_t
+ 103              		.file 3 "c:\\users\\user\\desktop\\arm-dev\\arm-tools\\arm-none-eabi\\include\\sys\\_stdint.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 isr_timer.c
+     obj/isr_timer.s:15     .text:00000000 $a
+     obj/isr_timer.s:21     .text:00000000 Timer0Handler
+     obj/isr_timer.s:96     .text:0000005c $d
+                     .debug_frame:00000010 $d
+
+NO UNDEFINED SYMBOLS

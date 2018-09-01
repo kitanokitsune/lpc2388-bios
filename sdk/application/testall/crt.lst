@@ -1,0 +1,52 @@
+   1              		.cpu arm7tdmi-s
+   2              		.text
+   3              	
+   4              		.extern		main
+   5              		.extern		_sp_base
+   6              		.extern		uart0_putc
+   7              		.extern		xfunc_out
+   8              		.extern		uart0_getc
+   9              		.extern		xfunc_in
+  10              		.global		sys_exit
+  11              	
+  12              		# save stack
+  13 0000 0D10A0E1 		mov	r1,r13
+  14 0004 30D09FE5 		ldr	r13,=_sp_base
+  15 0008 F25F2DE9 		push	{r1, r4, r5, r6, r7, r8, r9, r10, r11, r12, lr}
+  16              	
+  17              		# call main()
+  18 000c FEFFFFEB 		BL	main
+  19              	
+  20              	sys_exit:
+  21              	
+  22              		# restore console
+  23 0010 28209FE5 		ldr	r2, =uart0_putc
+  24 0014 28309FE5 		ldr	r3, =xfunc_out
+  25 0018 002083E5 		str	r2, [r3]
+  26 001c 24209FE5 		ldr	r2, =uart0_getc
+  27 0020 24309FE5 		ldr	r3, =xfunc_in
+  28 0024 002083E5 		str	r2, [r3]
+  29              	
+  30              		# restore stack
+  31 0028 0CD09FE5 		ldr	r13,=_sp_base
+  32 002c 2CD04DE2 		sub r13, r13, #44
+  33 0030 F25FBDE8 		pop	{r1, r4, r5, r6, r7, r8, r9, r10, r11, r12, lr}
+  34 0034 01D0A0E1 		mov	r13,r1
+  35 0038 1EFF2FE1 		bx	lr
+  36 003c 00000000 	
+  36      00000000 
+  36      00000000 
+  36      00000000 
+  36      00000000 
+DEFINED SYMBOLS
+     ../../lib/crt.s:20     .text:00000010 sys_exit
+     ../../lib/crt.s:13     .text:00000000 $a
+     ../../lib/crt.s:36     .text:0000003c $d
+
+UNDEFINED SYMBOLS
+_sp_base
+main
+uart0_putc
+xfunc_out
+uart0_getc
+xfunc_in

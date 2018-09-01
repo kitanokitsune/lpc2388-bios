@@ -1,0 +1,704 @@
+   1              		.cpu arm7tdmi-s
+   2              		.eabi_attribute 20, 1	@ Tag_ABI_FP_denormal
+   3              		.eabi_attribute 21, 1	@ Tag_ABI_FP_exceptions
+   4              		.eabi_attribute 23, 3	@ Tag_ABI_FP_number_model
+   5              		.eabi_attribute 24, 1	@ Tag_ABI_align8_needed
+   6              		.eabi_attribute 25, 1	@ Tag_ABI_align8_preserved
+   7              		.eabi_attribute 26, 1	@ Tag_ABI_enum_size
+   8              		.eabi_attribute 30, 1	@ Tag_ABI_optimization_goals
+   9              		.eabi_attribute 34, 0	@ Tag_CPU_unaligned_access
+  10              		.eabi_attribute 18, 4	@ Tag_ABI_PCS_wchar_t
+  11              		.file	"test.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.align	2
+  16              		.global	test
+  17              		.syntax unified
+  18              		.arm
+  19              		.fpu softvfp
+  21              	test:
+  22              	.LFB1:
+  23              		.file 1 "test.c"
+  24              		@ test.c:15
+   1:test.c        **** /*
+   2:test.c        ****     Heap Test
+   3:test.c        **** */
+   4:test.c        **** 
+   5:test.c        **** #include "bios2388.h"
+   6:test.c        **** #include "xprintf.h"
+   7:test.c        **** #include "malloc2388.h"
+   8:test.c        **** 
+   9:test.c        **** extern _TN_MALLOC_INFO_t _tn_malloc_info[];
+  10:test.c        **** extern uint8_t _tiny_malloc_flag;
+  11:test.c        **** 
+  12:test.c        **** int i,j;
+  13:test.c        **** unsigned long p;
+  14:test.c        **** void test(void)
+  15:test.c        **** {
+  25              		.loc 1 15 0
+  26              		.cfi_startproc
+  27              		@ Function supports interworking.
+  28              		@ args = 0, pretend = 0, frame = 8
+  29              		@ frame_needed = 0, uses_anonymous_args = 0
+  30              	@ BLOCK 2 freq:95 seq:0
+  31              	@ PRED: ENTRY [100.0%]  (FALLTHRU)
+  32 0000 F04F2DE9 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 36
+  35              		.cfi_offset 4, -36
+  36              		.cfi_offset 5, -32
+  37              		.cfi_offset 6, -28
+  38              		.cfi_offset 7, -24
+  39              		.cfi_offset 8, -20
+  40              		.cfi_offset 9, -16
+  41              		.cfi_offset 10, -12
+  42              		.cfi_offset 11, -8
+  43              		.cfi_offset 14, -4
+  44 0004 0CD04DE2 		sub	sp, sp, #12
+  45              	.LCFI1:
+  46              		.cfi_def_cfa_offset 48
+  47              		@ test.c:18
+  16:test.c        ****     unsigned char *pc;
+  17:test.c        **** 
+  18:test.c        ****     pc = malloc2388(sizeof(char)*0x410);
+  48              		.loc 1 18 0
+  49 0008 410EA0E3 		mov	r0, #1040
+  50 000c FEFFFFEB 		bl	malloc2388
+  51              	.LVL0:
+  52 0010 0020A0E1 		mov	r2, r0
+  53              	.LVL1:
+  54              	.LBB4:
+  55              	.LBB5:
+  56              		.file 2 "../../include/bios2388.h"
+  57              		@ ../../include/bios2388.h:40
+   1:../../include/bios2388.h **** #ifndef _BIOS2388_H_
+   2:../../include/bios2388.h **** #define _BIOS2388_H_
+   3:../../include/bios2388.h **** 
+   4:../../include/bios2388.h **** #include <stdint.h>
+   5:../../include/bios2388.h **** 
+   6:../../include/bios2388.h **** #ifdef __cplusplus
+   7:../../include/bios2388.h **** extern "C" {
+   8:../../include/bios2388.h **** #endif
+   9:../../include/bios2388.h **** 
+  10:../../include/bios2388.h **** char uart0_dataReady(void);
+  11:../../include/bios2388.h **** char uart0_getc(void);
+  12:../../include/bios2388.h **** void uart0_putc(char);
+  13:../../include/bios2388.h **** long xstrncpy_n(char *dst,char *src,long len);
+  14:../../include/bios2388.h **** int xstrcmp(char *,char *);
+  15:../../include/bios2388.h **** long xstrlen(char *);
+  16:../../include/bios2388.h **** 
+  17:../../include/bios2388.h **** void sys_exit(unsigned long);
+  18:../../include/bios2388.h **** #define exit(x) sys_exit(x)
+  19:../../include/bios2388.h **** 
+  20:../../include/bios2388.h **** char *_dbl2str(char *, double, int, int, int);
+  21:../../include/bios2388.h **** #define d2sf(b, d, w, p) _dbl2str(b, d, w, p, 'f') /* floating point */
+  22:../../include/bios2388.h **** #define d2se(b, d, w, p) _dbl2str(b, d, w, p, 'e') /* scientific notation */
+  23:../../include/bios2388.h **** #define d2sg(b, d, w, p) _dbl2str(b, d, w, p, 'g') /* shortest representation */
+  24:../../include/bios2388.h **** 
+  25:../../include/bios2388.h **** uintptr_t current_sp(void);
+  26:../../include/bios2388.h **** 
+  27:../../include/bios2388.h **** #ifdef __cplusplus
+  28:../../include/bios2388.h **** }
+  29:../../include/bios2388.h **** #endif
+  30:../../include/bios2388.h **** 
+  31:../../include/bios2388.h **** /*
+  32:../../include/bios2388.h **** static __inline__ void * gcc_current_pc(void)  {
+  33:../../include/bios2388.h ****     void *pc;
+  34:../../include/bios2388.h ****     asm("mov %0, pc" : "=r"(pc));
+  35:../../include/bios2388.h ****     return pc;
+  36:../../include/bios2388.h **** }
+  37:../../include/bios2388.h **** */
+  38:../../include/bios2388.h **** static inline unsigned long gcc_current_pc(void)  {
+  39:../../include/bios2388.h ****     volatile unsigned long pc;
+  40:../../include/bios2388.h ****     asm volatile ("mov %0, pc" : "=r"(pc));
+  58              		.loc 2 40 0
+  59              		.syntax divided
+  60              	@ 40 "../../include/bios2388.h" 1
+  61 0014 0F30A0E1 		mov r3, pc
+  62              	@ 0 "" 2
+  63              		.arm
+  64              		.syntax unified
+  65 0018 04308DE5 		str	r3, [sp, #4]
+  66              		@ ../../include/bios2388.h:41
+  41:../../include/bios2388.h ****     return pc;
+  67              		.loc 2 41 0
+  68 001c 04109DE5 		ldr	r1, [sp, #4]
+  69              	.LBE5:
+  70              	.LBE4:
+  71              		@ test.c:19
+  19:test.c        ****     p = gcc_current_pc();
+  72              		.loc 1 19 0
+  73 0020 D4309FE5 		ldr	r3, .L8
+  74 0024 001083E5 		str	r1, [r3]
+  75              		@ test.c:20
+  20:test.c        ****     xprintf("\npc=0x%08x, addr=%08x\n", p,pc);
+  76              		.loc 1 20 0
+  77 0028 D0009FE5 		ldr	r0, .L8+4
+  78              	.LVL2:
+  79 002c FEFFFFEB 		bl	xprintf
+  80              	.LVL3:
+  81              		@ test.c:21
+  21:test.c        ****     i = 0;
+  82              		.loc 1 21 0
+  83 0030 0020A0E3 		mov	r2, #0
+  84 0034 C8309FE5 		ldr	r3, .L8+8
+  85 0038 002083E5 		str	r2, [r3]
+  86              		@ test.c:23
+  22:test.c        ****     do {
+  23:test.c        ****         i++;
+  87              		.loc 1 23 0
+  88 003c 0380A0E1 		mov	r8, r3
+  89              		@ test.c:24
+  24:test.c        ****         pc = (unsigned char *)malloc2388(0x800);
+  90              		.loc 1 24 0
+  91 0040 02ABA0E3 		mov	r10, #2048
+  92              		@ test.c:25
+  25:test.c        ****         xprintf("(%2d) heap = %08x, sp=%08x\n", i, pc, current_sp());
+  93              		.loc 1 25 0
+  94 0044 BC909FE5 		ldr	r9, .L8+12
+  95              		@ test.c:27
+  26:test.c        ****         if (pc != NULL) {
+  27:test.c        ****             for(j=0; j<0x800; j++) {
+  96              		.loc 1 27 0
+  97 0048 BC409FE5 		ldr	r4, .L8+16
+  98              		@ test.c:29
+  28:test.c        ****                 pc[j] = (unsigned char)(-j);
+  29:test.c        ****                 if (pc[j] != (unsigned char)(-j)) xprintf("! %08x:%X\n",pc,j);
+  99              		.loc 1 29 0
+ 100 004c BC709FE5 		ldr	r7, .L8+20
+ 101              	@ SUCC: 3 [100.0%]  (FALLTHRU,CAN_FALLTHRU)
+ 102              		@ test.c:27
+  27:test.c        ****                 pc[j] = (unsigned char)(-j);
+ 103              		.loc 1 27 0
+ 104 0050 BC609FE5 		ldr	r6, .L8+24
+ 105              	@ BLOCK 3 freq:1059 seq:1
+ 106              	@ PRED: 2 [100.0%]  (FALLTHRU,CAN_FALLTHRU) 5 [9.0%]  (DFS_BACK,CAN_FALLTHRU,LOOP_EXIT)
+ 107              	.L5:
+ 108              		@ test.c:23
+  23:test.c        ****         pc = (unsigned char *)malloc2388(0x800);
+ 109              		.loc 1 23 0
+ 110 0054 003098E5 		ldr	r3, [r8]
+ 111 0058 013083E2 		add	r3, r3, #1
+ 112 005c 003088E5 		str	r3, [r8]
+ 113              		@ test.c:24
+  24:test.c        ****         xprintf("(%2d) heap = %08x, sp=%08x\n", i, pc, current_sp());
+ 114              		.loc 1 24 0
+ 115 0060 0A00A0E1 		mov	r0, r10
+ 116 0064 FEFFFFEB 		bl	malloc2388
+ 117              	.LVL4:
+ 118 0068 0050A0E1 		mov	r5, r0
+ 119              	.LVL5:
+ 120              		@ test.c:25
+  25:test.c        ****         if (pc != NULL) {
+ 121              		.loc 1 25 0
+ 122 006c 00B098E5 		ldr	fp, [r8]
+ 123 0070 FEFFFFEB 		bl	current_sp
+ 124              	.LVL6:
+ 125 0074 0030A0E1 		mov	r3, r0
+ 126 0078 0520A0E1 		mov	r2, r5
+ 127 007c 0B10A0E1 		mov	r1, fp
+ 128 0080 0900A0E1 		mov	r0, r9
+ 129 0084 FEFFFFEB 		bl	xprintf
+ 130              	.LVL7:
+ 131              		@ test.c:26
+  26:test.c        ****             for(j=0; j<0x800; j++) {
+ 132              		.loc 1 26 0
+ 133 0088 000055E3 		cmp	r5, #0
+ 134              	@ SUCC: 4 [85.0%]  (FALLTHRU,CAN_FALLTHRU) 8 [15.0%]  (CAN_FALLTHRU,LOOP_EXIT)
+ 135 008c 1300000A 		beq	.L2
+ 136              	@ BLOCK 4 freq:900 seq:2
+ 137              	@ PRED: 3 [85.0%]  (FALLTHRU,CAN_FALLTHRU)
+ 138              		@ test.c:27
+  27:test.c        ****                 pc[j] = (unsigned char)(-j);
+ 139              		.loc 1 27 0
+ 140 0090 0030A0E3 		mov	r3, #0
+ 141 0094 003084E5 		str	r3, [r4]
+ 142              	@ SUCC: 6 [100.0%]  (CAN_FALLTHRU)
+ 143 0098 040000EA 		b	.L4
+ 144              	@ BLOCK 5 freq:9100 seq:3
+ 145              	@ PRED: 6 [48.8%]  (CAN_FALLTHRU) 7 [100.0%]  (CAN_FALLTHRU)
+ 146              	.L3:
+ 147              		@ test.c:27
+  27:test.c        ****                 pc[j] = (unsigned char)(-j);
+ 148              		.loc 1 27 0 is_stmt 0
+ 149 009c 003094E5 		ldr	r3, [r4]
+ 150 00a0 013083E2 		add	r3, r3, #1
+ 151 00a4 003084E5 		str	r3, [r4]
+ 152 00a8 060053E1 		cmp	r3, r6
+ 153              	@ SUCC: 6 [91.0%]  (FALLTHRU,DFS_BACK,CAN_FALLTHRU) 3 [9.0%]  (DFS_BACK,CAN_FALLTHRU,LOOP_EXIT)
+ 154 00ac E8FFFFCA 		bgt	.L5
+ 155              	@ BLOCK 6 freq:9100 seq:4
+ 156              	@ PRED: 5 [91.0%]  (FALLTHRU,DFS_BACK,CAN_FALLTHRU) 4 [100.0%]  (CAN_FALLTHRU)
+ 157              	.L4:
+ 158              		@ test.c:28
+  28:test.c        ****                 if (pc[j] != (unsigned char)(-j)) xprintf("! %08x:%X\n",pc,j);
+ 159              		.loc 1 28 0 is_stmt 1
+ 160 00b0 002063E2 		rsb	r2, r3, #0
+ 161 00b4 0320C5E7 		strb	r2, [r5, r3]
+ 162              		@ test.c:29
+ 163              		.loc 1 29 0
+ 164 00b8 002094E5 		ldr	r2, [r4]
+ 165 00bc 003062E2 		rsb	r3, r2, #0
+ 166 00c0 0210D5E7 		ldrb	r1, [r5, r2]	@ zero_extendqisi2
+ 167 00c4 FF3003E2 		and	r3, r3, #255
+ 168 00c8 030051E1 		cmp	r1, r3
+ 169              	@ SUCC: 7 [51.2%]  (FALLTHRU,CAN_FALLTHRU) 5 [48.8%]  (CAN_FALLTHRU)
+ 170 00cc F2FFFF0A 		beq	.L3
+ 171              	@ BLOCK 7 freq:4662 seq:5
+ 172              	@ PRED: 6 [51.2%]  (FALLTHRU,CAN_FALLTHRU)
+ 173              		@ test.c:29
+ 174              		.loc 1 29 0 is_stmt 0
+ 175 00d0 0510A0E1 		mov	r1, r5
+ 176 00d4 0700A0E1 		mov	r0, r7
+ 177 00d8 FEFFFFEB 		bl	xprintf
+ 178              	.LVL8:
+ 179              	@ SUCC: 5 [100.0%]  (CAN_FALLTHRU)
+ 180 00dc EEFFFFEA 		b	.L3
+ 181              	@ BLOCK 8 freq:159 seq:6
+ 182              	@ PRED: 3 [15.0%]  (CAN_FALLTHRU,LOOP_EXIT)
+ 183              	.L2:
+ 184              		@ test.c:34
+  30:test.c        ****             }
+  31:test.c        ****         }
+  32:test.c        ****     } while (pc != NULL);
+  33:test.c        **** 
+  34:test.c        ****     xprintf("Exit internally with return code 0x975.\n");
+ 185              		.loc 1 34 0 is_stmt 1
+ 186 00e0 30009FE5 		ldr	r0, .L8+28
+ 187 00e4 FEFFFFEB 		bl	xprintf
+ 188              	.LVL9:
+ 189              		@ test.c:35
+  35:test.c        ****     exit(0x975);
+ 190              		.loc 1 35 0
+ 191 00e8 2C009FE5 		ldr	r0, .L8+32
+ 192 00ec FEFFFFEB 		bl	sys_exit
+ 193              	.LVL10:
+ 194              		@ test.c:36
+  36:test.c        **** }
+ 195              		.loc 1 36 0
+ 196 00f0 0CD08DE2 		add	sp, sp, #12
+ 197              	.LCFI2:
+ 198              		.cfi_def_cfa_offset 36
+ 199              		@ sp needed
+ 200 00f4 F04FBDE8 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 201              	.LCFI3:
+ 202              		.cfi_restore 14
+ 203              		.cfi_restore 11
+ 204              		.cfi_restore 10
+ 205              		.cfi_restore 9
+ 206              		.cfi_restore 8
+ 207              		.cfi_restore 7
+ 208              		.cfi_restore 6
+ 209              		.cfi_restore 5
+ 210              		.cfi_restore 4
+ 211              		.cfi_def_cfa_offset 0
+ 212              	.LVL11:
+ 213              	@ SUCC: EXIT [100.0%] 
+ 214 00f8 1EFF2FE1 		bx	lr
+ 215              	.L9:
+ 216              		.align	2
+ 217              	.L8:
+ 218 00fc 00000000 		.word	p
+ 219 0100 00000000 		.word	.LC0
+ 220 0104 00000000 		.word	i
+ 221 0108 18000000 		.word	.LC1
+ 222 010c 00000000 		.word	j
+ 223 0110 34000000 		.word	.LC2
+ 224 0114 FF070000 		.word	2047
+ 225 0118 40000000 		.word	.LC3
+ 226 011c 75090000 		.word	2421
+ 227              		.cfi_endproc
+ 228              	.LFE1:
+ 230              		.align	2
+ 231              		.global	main
+ 232              		.syntax unified
+ 233              		.arm
+ 234              		.fpu softvfp
+ 236              	main:
+ 237              	.LFB2:
+ 238              		@ test.c:40
+  37:test.c        **** 
+  38:test.c        **** 
+  39:test.c        **** int main(void)
+  40:test.c        **** {
+ 239              		.loc 1 40 0
+ 240              		.cfi_startproc
+ 241              		@ Function supports interworking.
+ 242              		@ args = 0, pretend = 0, frame = 0
+ 243              		@ frame_needed = 0, uses_anonymous_args = 0
+ 244              	@ BLOCK 2 freq:1111 seq:0
+ 245              	@ PRED: ENTRY [100.0%]  (FALLTHRU)
+ 246 0120 F0412DE9 		push	{r4, r5, r6, r7, r8, lr}
+ 247              	.LCFI4:
+ 248              		.cfi_def_cfa_offset 24
+ 249              		.cfi_offset 4, -24
+ 250              		.cfi_offset 5, -20
+ 251              		.cfi_offset 6, -16
+ 252              		.cfi_offset 7, -12
+ 253              		.cfi_offset 8, -8
+ 254              		.cfi_offset 14, -4
+ 255              	.LVL12:
+ 256              		@ test.c:49
+  41:test.c        ****     int i;
+  42:test.c        ****     unsigned char blk, memcfg;
+  43:test.c        ****     void *k;
+  44:test.c        **** 
+  45:test.c        ****     blk = 4; /* cluster size */
+  46:test.c        ****     /* Memory configration for malloc2388 */
+  47:test.c        ****     memcfg = LPC_RAM | LPC_URAM | LPC_ERAM; /* Use main, USB and Ether RAM */
+  48:test.c        **** 
+  49:test.c        ****     xprintf("\nmalloc2388_init(clustersize=%d, memcfg=%d): %ld clusters available\n", blk, memcfg, 
+ 257              		.loc 1 49 0
+ 258 0124 18319FE5 		ldr	r3, .L20
+ 259 0128 18219FE5 		ldr	r2, .L20+4
+ 260 012c 0710A0E3 		mov	r1, #7
+ 261 0130 0400A0E3 		mov	r0, #4
+ 262 0134 FEFFFFEB 		bl	__malloc2388_init
+ 263              	.LVL13:
+ 264 0138 0030A0E1 		mov	r3, r0
+ 265 013c 0720A0E3 		mov	r2, #7
+ 266 0140 0410A0E3 		mov	r1, #4
+ 267 0144 00019FE5 		ldr	r0, .L20+8
+ 268 0148 FEFFFFEB 		bl	xprintf
+ 269              	.LVL14:
+ 270              		@ test.c:52
+  50:test.c        **** 
+  51:test.c        **** 
+  52:test.c        ****     xprintf("* alloc(5) = %08x\n",malloc2388(5));
+ 271              		.loc 1 52 0
+ 272 014c 0500A0E3 		mov	r0, #5
+ 273 0150 FEFFFFEB 		bl	malloc2388
+ 274              	.LVL15:
+ 275 0154 0010A0E1 		mov	r1, r0
+ 276 0158 F0009FE5 		ldr	r0, .L20+12
+ 277 015c FEFFFFEB 		bl	xprintf
+ 278              	.LVL16:
+ 279 0160 0340A0E3 		mov	r4, #3
+ 280              		@ test.c:55
+  53:test.c        **** 
+  54:test.c        ****     for (i=0 ; i<3; i++) {
+  55:test.c        ****         xprintf("* alloc(8) = %08x\n", malloc2388(8));
+ 281              		.loc 1 55 0
+ 282 0164 0860A0E3 		mov	r6, #8
+ 283              	@ SUCC: 3 [100.0%]  (FALLTHRU,CAN_FALLTHRU)
+ 284 0168 E4509FE5 		ldr	r5, .L20+16
+ 285              	.LVL17:
+ 286              	@ BLOCK 3 freq:3333 seq:1
+ 287              	@ PRED: 3 [75.0%]  (DFS_BACK,CAN_FALLTHRU) 2 [100.0%]  (FALLTHRU,CAN_FALLTHRU)
+ 288              	.L11:
+ 289              		@ test.c:55
+ 290              		.loc 1 55 0 is_stmt 0
+ 291 016c 0600A0E1 		mov	r0, r6
+ 292 0170 FEFFFFEB 		bl	malloc2388
+ 293              	.LVL18:
+ 294 0174 0010A0E1 		mov	r1, r0
+ 295 0178 0500A0E1 		mov	r0, r5
+ 296 017c FEFFFFEB 		bl	xprintf
+ 297              	.LVL19:
+ 298              		@ test.c:54
+  54:test.c        ****         xprintf("* alloc(8) = %08x\n", malloc2388(8));
+ 299              		.loc 1 54 0 is_stmt 1
+ 300 0180 014054E2 		subs	r4, r4, #1
+ 301              	.LVL20:
+ 302              	@ SUCC: 3 [75.0%]  (DFS_BACK,CAN_FALLTHRU) 4 [25.0%]  (FALLTHRU,CAN_FALLTHRU,LOOP_EXIT)
+ 303 0184 F8FFFF1A 		bne	.L11
+ 304              	@ BLOCK 4 freq:833 seq:2
+ 305              	@ PRED: 3 [25.0%]  (FALLTHRU,CAN_FALLTHRU,LOOP_EXIT)
+ 306 0188 0340A0E3 		mov	r4, #3
+ 307              	.LVL21:
+ 308              		@ test.c:59
+  56:test.c        ****     }
+  57:test.c        **** 
+  58:test.c        ****     for (i=0 ; i<3; i++) {
+  59:test.c        ****         xprintf("* alloc(1) = %08x\n", malloc2388(1));
+ 309              		.loc 1 59 0
+ 310 018c 0160A0E3 		mov	r6, #1
+ 311              	@ SUCC: 5 [100.0%]  (FALLTHRU,CAN_FALLTHRU)
+ 312 0190 C0509FE5 		ldr	r5, .L20+20
+ 313              	@ BLOCK 5 freq:3333 seq:3
+ 314              	@ PRED: 4 [100.0%]  (FALLTHRU,CAN_FALLTHRU) 5 [75.0%]  (DFS_BACK,CAN_FALLTHRU)
+ 315              	.L12:
+ 316              	.LVL22:
+ 317              		@ test.c:59
+ 318              		.loc 1 59 0 is_stmt 0
+ 319 0194 0600A0E1 		mov	r0, r6
+ 320 0198 FEFFFFEB 		bl	malloc2388
+ 321              	.LVL23:
+ 322 019c 0010A0E1 		mov	r1, r0
+ 323 01a0 0500A0E1 		mov	r0, r5
+ 324 01a4 FEFFFFEB 		bl	xprintf
+ 325              	.LVL24:
+ 326              		@ test.c:58
+  58:test.c        ****         xprintf("* alloc(1) = %08x\n", malloc2388(1));
+ 327              		.loc 1 58 0 is_stmt 1
+ 328 01a8 014054E2 		subs	r4, r4, #1
+ 329              	.LVL25:
+ 330              	@ SUCC: 5 [75.0%]  (DFS_BACK,CAN_FALLTHRU) 6 [25.0%]  (FALLTHRU,CAN_FALLTHRU,LOOP_EXIT)
+ 331 01ac F8FFFF1A 		bne	.L12
+ 332              	@ BLOCK 6 freq:1111 seq:4
+ 333              	@ PRED: 5 [25.0%]  (FALLTHRU,CAN_FALLTHRU,LOOP_EXIT)
+ 334              		@ test.c:62
+  60:test.c        ****     }
+  61:test.c        **** 
+  62:test.c        ****     xprintf("* alloc(3) = %08x\n",k = malloc2388(3));
+ 335              		.loc 1 62 0
+ 336 01b0 0300A0E3 		mov	r0, #3
+ 337 01b4 FEFFFFEB 		bl	malloc2388
+ 338              	.LVL26:
+ 339 01b8 0050A0E1 		mov	r5, r0
+ 340              	.LVL27:
+ 341 01bc 0010A0E1 		mov	r1, r0
+ 342 01c0 94009FE5 		ldr	r0, .L20+24
+ 343              	.LVL28:
+ 344 01c4 FEFFFFEB 		bl	xprintf
+ 345              	.LVL29:
+ 346 01c8 0340A0E3 		mov	r4, #3
+ 347              		@ test.c:65
+  63:test.c        **** 
+  64:test.c        ****     for (i=0 ; i<3; i++) {
+  65:test.c        ****         xprintf("* alloc(8) = %08x\n", malloc2388(8));
+ 348              		.loc 1 65 0
+ 349 01cc 0870A0E3 		mov	r7, #8
+ 350              	@ SUCC: 7 [100.0%]  (FALLTHRU,CAN_FALLTHRU)
+ 351 01d0 7C609FE5 		ldr	r6, .L20+16
+ 352              	.LVL30:
+ 353              	@ BLOCK 7 freq:3333 seq:5
+ 354              	@ PRED: 7 [75.0%]  (DFS_BACK,CAN_FALLTHRU) 6 [100.0%]  (FALLTHRU,CAN_FALLTHRU)
+ 355              	.L13:
+ 356              		@ test.c:65
+ 357              		.loc 1 65 0 is_stmt 0
+ 358 01d4 0700A0E1 		mov	r0, r7
+ 359 01d8 FEFFFFEB 		bl	malloc2388
+ 360              	.LVL31:
+ 361 01dc 0010A0E1 		mov	r1, r0
+ 362 01e0 0600A0E1 		mov	r0, r6
+ 363 01e4 FEFFFFEB 		bl	xprintf
+ 364              	.LVL32:
+ 365              		@ test.c:64
+  64:test.c        ****         xprintf("* alloc(8) = %08x\n", malloc2388(8));
+ 366              		.loc 1 64 0 is_stmt 1
+ 367 01e8 014054E2 		subs	r4, r4, #1
+ 368              	.LVL33:
+ 369              	@ SUCC: 7 [75.0%]  (DFS_BACK,CAN_FALLTHRU) 8 [25.0%]  (FALLTHRU,CAN_FALLTHRU,LOOP_EXIT)
+ 370 01ec F8FFFF1A 		bne	.L13
+ 371              	@ BLOCK 8 freq:1111 seq:6
+ 372              	@ PRED: 7 [25.0%]  (FALLTHRU,CAN_FALLTHRU,LOOP_EXIT)
+ 373              		@ test.c:68
+  66:test.c        ****     }
+  67:test.c        **** 
+  68:test.c        ****     xprintf("* free(3 @ %08x)\n", k);
+ 374              		.loc 1 68 0
+ 375 01f0 0510A0E1 		mov	r1, r5
+ 376 01f4 64009FE5 		ldr	r0, .L20+28
+ 377 01f8 FEFFFFEB 		bl	xprintf
+ 378              	.LVL34:
+ 379              		@ test.c:69
+  69:test.c        ****     free2388(k);
+ 380              		.loc 1 69 0
+ 381 01fc 0500A0E1 		mov	r0, r5
+ 382 0200 FEFFFFEB 		bl	free2388
+ 383              	.LVL35:
+ 384              		@ test.c:71
+  70:test.c        **** 
+  71:test.c        ****     for (i=8 ; i>0; i--) {
+ 385              		.loc 1 71 0
+ 386 0204 0840A0E3 		mov	r4, #8
+ 387              	@ SUCC: 9 [100.0%]  (FALLTHRU,CAN_FALLTHRU)
+ 388              		@ test.c:72
+  72:test.c        ****         xprintf("* alloc(%d) = %08x\n",i , malloc2388(i));
+ 389              		.loc 1 72 0
+ 390 0208 54509FE5 		ldr	r5, .L20+32
+ 391              	.LVL36:
+ 392              	@ BLOCK 9 freq:8890 seq:7
+ 393              	@ PRED: 9 [88.9%]  (DFS_BACK,CAN_FALLTHRU) 8 [100.0%]  (FALLTHRU,CAN_FALLTHRU)
+ 394              	.L14:
+ 395              		@ test.c:72
+ 396              		.loc 1 72 0 is_stmt 0
+ 397 020c 0400A0E1 		mov	r0, r4
+ 398 0210 FEFFFFEB 		bl	malloc2388
+ 399              	.LVL37:
+ 400 0214 0020A0E1 		mov	r2, r0
+ 401 0218 0410A0E1 		mov	r1, r4
+ 402 021c 0500A0E1 		mov	r0, r5
+ 403 0220 FEFFFFEB 		bl	xprintf
+ 404              	.LVL38:
+ 405              		@ test.c:71
+  71:test.c        ****         xprintf("* alloc(%d) = %08x\n",i , malloc2388(i));
+ 406              		.loc 1 71 0 is_stmt 1
+ 407 0224 014054E2 		subs	r4, r4, #1
+ 408              	.LVL39:
+ 409              	@ SUCC: 9 [88.9%]  (DFS_BACK,CAN_FALLTHRU) 10 [11.1%]  (FALLTHRU,CAN_FALLTHRU,LOOP_EXIT)
+ 410 0228 F7FFFF1A 		bne	.L14
+ 411              	@ BLOCK 10 freq:1111 seq:8
+ 412              	@ PRED: 9 [11.1%]  (FALLTHRU,CAN_FALLTHRU,LOOP_EXIT)
+ 413              		@ test.c:76
+  73:test.c        ****     }
+  74:test.c        **** 
+  75:test.c        **** 
+  76:test.c        ****     test(); /* internally exit(0x975) */
+ 414              		.loc 1 76 0
+ 415 022c FEFFFFEB 		bl	test
+ 416              	.LVL40:
+ 417              		@ test.c:79
+  77:test.c        **** 
+  78:test.c        ****     /* never processed */
+  79:test.c        ****     xprintf("complete.\n");
+ 418              		.loc 1 79 0
+ 419 0230 30009FE5 		ldr	r0, .L20+36
+ 420 0234 FEFFFFEB 		bl	xprintf
+ 421              	.LVL41:
+ 422              		@ test.c:82
+  80:test.c        **** 
+  81:test.c        ****     return 1;
+  82:test.c        **** }
+ 423              		.loc 1 82 0
+ 424 0238 0100A0E3 		mov	r0, #1
+ 425 023c F041BDE8 		pop	{r4, r5, r6, r7, r8, lr}
+ 426              	.LCFI5:
+ 427              		.cfi_restore 14
+ 428              		.cfi_restore 8
+ 429              		.cfi_restore 7
+ 430              		.cfi_restore 6
+ 431              		.cfi_restore 5
+ 432              		.cfi_restore 4
+ 433              		.cfi_def_cfa_offset 0
+ 434              	.LVL42:
+ 435              	@ SUCC: EXIT [100.0%] 
+ 436 0240 1EFF2FE1 		bx	lr
+ 437              	.L21:
+ 438              		.align	2
+ 439              	.L20:
+ 440 0244 00000000 		.word	_heap_end_
+ 441 0248 00000000 		.word	_heap_start_
+ 442 024c 6C000000 		.word	.LC4
+ 443 0250 B4000000 		.word	.LC5
+ 444 0254 C8000000 		.word	.LC6
+ 445 0258 DC000000 		.word	.LC7
+ 446 025c F0000000 		.word	.LC8
+ 447 0260 04010000 		.word	.LC9
+ 448 0264 18010000 		.word	.LC10
+ 449 0268 2C010000 		.word	.LC11
+ 450              		.cfi_endproc
+ 451              	.LFE2:
+ 453              		.comm	p,4,4
+ 454              		.comm	j,4,4
+ 455              		.comm	i,4,4
+ 456              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 457              		.align	2
+ 458              	.LC0:
+ 459 0000 0A70633D 		.ascii	"\012pc=0x%08x, addr=%08x\012\000"
+ 459      30782530 
+ 459      38782C20 
+ 459      61646472 
+ 459      3D253038 
+ 460 0017 00       		.space	1
+ 461              	.LC1:
+ 462 0018 28253264 		.ascii	"(%2d) heap = %08x, sp=%08x\012\000"
+ 462      29206865 
+ 462      6170203D 
+ 462      20253038 
+ 462      782C2073 
+ 463              	.LC2:
+ 464 0034 21202530 		.ascii	"! %08x:%X\012\000"
+ 464      38783A25 
+ 464      580A00
+ 465 003f 00       		.space	1
+ 466              	.LC3:
+ 467 0040 45786974 		.ascii	"Exit internally with return code 0x975.\012\000"
+ 467      20696E74 
+ 467      65726E61 
+ 467      6C6C7920 
+ 467      77697468 
+ 468 0069 000000   		.space	3
+ 469              	.LC4:
+ 470 006c 0A6D616C 		.ascii	"\012malloc2388_init(clustersize=%d, memcfg=%d): %ld"
+ 470      6C6F6332 
+ 470      3338385F 
+ 470      696E6974 
+ 470      28636C75 
+ 471 009c 20636C75 		.ascii	" clusters available\012\000"
+ 471      73746572 
+ 471      73206176 
+ 471      61696C61 
+ 471      626C650A 
+ 472 00b1 000000   		.space	3
+ 473              	.LC5:
+ 474 00b4 2A20616C 		.ascii	"* alloc(5) = %08x\012\000"
+ 474      6C6F6328 
+ 474      3529203D 
+ 474      20253038 
+ 474      780A00
+ 475 00c7 00       		.space	1
+ 476              	.LC6:
+ 477 00c8 2A20616C 		.ascii	"* alloc(8) = %08x\012\000"
+ 477      6C6F6328 
+ 477      3829203D 
+ 477      20253038 
+ 477      780A00
+ 478 00db 00       		.space	1
+ 479              	.LC7:
+ 480 00dc 2A20616C 		.ascii	"* alloc(1) = %08x\012\000"
+ 480      6C6F6328 
+ 480      3129203D 
+ 480      20253038 
+ 480      780A00
+ 481 00ef 00       		.space	1
+ 482              	.LC8:
+ 483 00f0 2A20616C 		.ascii	"* alloc(3) = %08x\012\000"
+ 483      6C6F6328 
+ 483      3329203D 
+ 483      20253038 
+ 483      780A00
+ 484 0103 00       		.space	1
+ 485              	.LC9:
+ 486 0104 2A206672 		.ascii	"* free(3 @ %08x)\012\000"
+ 486      65652833 
+ 486      20402025 
+ 486      30387829 
+ 486      0A00
+ 487 0116 0000     		.space	2
+ 488              	.LC10:
+ 489 0118 2A20616C 		.ascii	"* alloc(%d) = %08x\012\000"
+ 489      6C6F6328 
+ 489      25642920 
+ 489      3D202530 
+ 489      38780A00 
+ 490              	.LC11:
+ 491 012c 636F6D70 		.ascii	"complete.\012\000"
+ 491      6C657465 
+ 491      2E0A00
+ 492              		.text
+ 493              	.Letext0:
+ 494              		.file 3 "c:\\users\\user\\desktop\\arm-dev\\arm-tools\\arm-none-eabi\\include\\machine\\_default_t
+ 495              		.file 4 "c:\\users\\user\\desktop\\arm-dev\\arm-tools\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 496              		.file 5 "../../include/xprintf.h"
+ 497              		.file 6 "c:\\users\\user\\desktop\\arm-dev\\arm-tools\\arm-none-eabi\\include\\sys\\lock.h"
+ 498              		.file 7 "c:\\users\\user\\desktop\\arm-dev\\arm-tools\\arm-none-eabi\\include\\sys\\_types.h"
+ 499              		.file 8 "c:\\users\\user\\desktop\\arm-dev\\arm-tools\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\st
+ 500              		.file 9 "c:\\users\\user\\desktop\\arm-dev\\arm-tools\\arm-none-eabi\\include\\sys\\reent.h"
+ 501              		.file 10 "../../include/tinymalloc.h"
+ 502              		.file 11 "../../include/malloc2388.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 test.c
+          obj/test.s:15     .text:00000000 $a
+          obj/test.s:21     .text:00000000 test
+          obj/test.s:218    .text:000000fc $d
+                            *COM*:00000004 p
+                            *COM*:00000004 i
+                            *COM*:00000004 j
+          obj/test.s:230    .text:00000120 $a
+          obj/test.s:236    .text:00000120 main
+          obj/test.s:440    .text:00000244 $d
+          obj/test.s:457    .rodata.str1.4:00000000 $d
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+malloc2388
+xprintf
+current_sp
+sys_exit
+__malloc2388_init
+free2388
+_heap_end_
+_heap_start_

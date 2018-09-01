@@ -1,0 +1,459 @@
+   1              		.cpu arm7tdmi-s
+   2              		.eabi_attribute 20, 1	@ Tag_ABI_FP_denormal
+   3              		.eabi_attribute 21, 1	@ Tag_ABI_FP_exceptions
+   4              		.eabi_attribute 23, 3	@ Tag_ABI_FP_number_model
+   5              		.eabi_attribute 24, 1	@ Tag_ABI_align8_needed
+   6              		.eabi_attribute 25, 1	@ Tag_ABI_align8_preserved
+   7              		.eabi_attribute 26, 1	@ Tag_ABI_enum_size
+   8              		.eabi_attribute 30, 1	@ Tag_ABI_optimization_goals
+   9              		.eabi_attribute 34, 0	@ Tag_CPU_unaligned_access
+  10              		.eabi_attribute 18, 4	@ Tag_ABI_PCS_wchar_t
+  11              		.file	"main.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.align	2
+  16              		.global	scan_files
+  17              		.syntax unified
+  18              		.arm
+  19              		.fpu softvfp
+  21              	scan_files:
+  22              	.LFB1:
+  23              		.file 1 "main.c"
+  24              		@ main.c:14
+   1:main.c        **** 
+   2:main.c        **** #include "lpc2300.h"
+   3:main.c        **** #include "bios2388.h"
+   4:main.c        **** #include "ff.h"			/* Declarations of FatFs API */
+   5:main.c        **** #include "xprintf.h"
+   6:main.c        **** 
+   7:main.c        **** 
+   8:main.c        **** FATFS fs;
+   9:main.c        **** char buff[256];
+  10:main.c        **** 
+  11:main.c        **** FRESULT scan_files (
+  12:main.c        ****     char* path        /* 開始ノード (ワークエリアとしても使用) */
+  13:main.c        **** )
+  14:main.c        **** {
+  25              		.loc 1 14 0
+  26              		.cfi_startproc
+  27              		@ Function supports interworking.
+  28              		@ args = 0, pretend = 0, frame = 48
+  29              		@ frame_needed = 0, uses_anonymous_args = 0
+  30              	.LVL0:
+  31              	@ BLOCK 2 freq:1200 seq:0
+  32              	@ PRED: ENTRY [100.0%]  (FALLTHRU)
+  33 0000 F04F2DE9 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 36
+  36              		.cfi_offset 4, -36
+  37              		.cfi_offset 5, -32
+  38              		.cfi_offset 6, -28
+  39              		.cfi_offset 7, -24
+  40              		.cfi_offset 8, -20
+  41              		.cfi_offset 9, -16
+  42              		.cfi_offset 10, -12
+  43              		.cfi_offset 11, -8
+  44              		.cfi_offset 14, -4
+  45 0004 34D04DE2 		sub	sp, sp, #52
+  46              	.LCFI1:
+  47              		.cfi_def_cfa_offset 88
+  48 0008 0050A0E1 		mov	r5, r0
+  49              		@ main.c:21
+  15:main.c        ****     FRESULT res;
+  16:main.c        ****     DIR dir;
+  17:main.c        ****     UINT i;
+  18:main.c        ****     static FILINFO fno;
+  19:main.c        **** 
+  20:main.c        **** 
+  21:main.c        ****     res = f_opendir(&dir, path);                       /* ディレクトリを開く */
+  50              		.loc 1 21 0
+  51 000c 0010A0E1 		mov	r1, r0
+  52 0010 0D00A0E1 		mov	r0, sp
+  53              	.LVL1:
+  54 0014 FEFFFFEB 		bl	f_opendir
+  55              	.LVL2:
+  56              		@ main.c:22
+  22:main.c        ****     if (res == FR_OK) {
+  57              		.loc 1 22 0
+  58 0018 006050E2 		subs	r6, r0, #0
+  59              	@ SUCC: 3 [61.0%]  (FALLTHRU,CAN_FALLTHRU) 13 [39.0%]  (CAN_FALLTHRU)
+  60 001c 2D00001A 		bne	.L3
+  61              	@ BLOCK 3 freq:732 seq:1
+  62              	@ PRED: 2 [61.0%]  (FALLTHRU,CAN_FALLTHRU)
+  63              		@ main.c:24
+  23:main.c        ****         for (;;) {
+  24:main.c        ****             res = f_readdir(&dir, &fno);                   /* ディレクトリ項目を1個読み
+  64              		.loc 1 24 0
+  65 0020 C0409FE5 		ldr	r4, .L10
+  66              		@ main.c:33
+  25:main.c        ****             if (res != FR_OK || fno.fname[0] == 0) break;  /* エラーまたは項目無しのと�
+  26:main.c        ****             if (fno.fattrib & AM_DIR) {                    /* ディレクトリ */
+  27:main.c        ****                 i = xstrlen(path);
+  28:main.c        ****                 xsprintf(&path[i], "/%s", fno.fname);
+  29:main.c        ****                 res = scan_files(path);                    /* 一つ下へ */
+  30:main.c        ****                 if (res != FR_OK) break;
+  31:main.c        ****                 path[i] = 0;
+  32:main.c        ****             } else {                                       /* ファイル */
+  33:main.c        ****                 if (xstrcmp(path,"/")) xprintf("%s/%s\n", path, fno.fname);
+  67              		.loc 1 33 0
+  68 0024 C0A09FE5 		ldr	r10, .L10+4
+  69              		@ main.c:34
+  34:main.c        ****                 else xprintf("/%s\n", fno.fname);
+  70              		.loc 1 34 0
+  71 0028 098084E2 		add	r8, r4, #9
+  72 002c BCB09FE5 		ldr	fp, .L10+8
+  73              		@ main.c:28
+  28:main.c        ****                 res = scan_files(path);                    /* 一つ下へ */
+  74              		.loc 1 28 0
+  75 0030 BC909FE5 		ldr	r9, .L10+12
+  76              	@ SUCC: 6 [100.0%]  (CAN_FALLTHRU)
+  77 0034 080000EA 		b	.L8
+  78              	@ BLOCK 4 freq:4705 seq:2
+  79              	@ PRED: 8 [50.0%]  (CAN_FALLTHRU)
+  80              	.L5:
+  81              		@ main.c:33
+  33:main.c        ****                 else xprintf("/%s\n", fno.fname);
+  82              		.loc 1 33 0
+  83 0038 0A10A0E1 		mov	r1, r10
+  84 003c 0500A0E1 		mov	r0, r5
+  85              	.LVL3:
+  86 0040 FEFFFFEB 		bl	xstrcmp
+  87              	.LVL4:
+  88 0044 000050E3 		cmp	r0, #0
+  89              	@ SUCC: 5 [50.0%]  (FALLTHRU,CAN_FALLTHRU) 11 [50.0%]  (CAN_FALLTHRU)
+  90 0048 1C00000A 		beq	.L7
+  91              	@ BLOCK 5 freq:2352 seq:3
+  92              	@ PRED: 4 [50.0%]  (FALLTHRU,CAN_FALLTHRU)
+  93              		@ main.c:33
+  33:main.c        ****                 else xprintf("/%s\n", fno.fname);
+  94              		.loc 1 33 0 is_stmt 0
+  95 004c 0820A0E1 		mov	r2, r8
+  96 0050 0510A0E1 		mov	r1, r5
+  97 0054 9C009FE5 		ldr	r0, .L10+16
+  98              	@ SUCC: 6 [100.0%]  (FALLTHRU,DFS_BACK,CAN_FALLTHRU)
+  99 0058 FEFFFFEB 		bl	xprintf
+ 100              	.LVL5:
+ 101              	@ BLOCK 6 freq:10000 seq:4
+ 102              	@ PRED: 10 [100.0%]  (DFS_BACK,CAN_FALLTHRU) 5 [100.0%]  (FALLTHRU,DFS_BACK,CAN_FALLTHRU) 3 [100.0%
+ 103              	.L8:
+ 104              		@ main.c:24
+  24:main.c        ****             if (res != FR_OK || fno.fname[0] == 0) break;  /* エラーまたは項目無しのと�
+ 105              		.loc 1 24 0 is_stmt 1
+ 106 005c 0410A0E1 		mov	r1, r4
+ 107 0060 0D00A0E1 		mov	r0, sp
+ 108 0064 FEFFFFEB 		bl	f_readdir
+ 109              	.LVL6:
+ 110              		@ main.c:25
+  25:main.c        ****             if (fno.fattrib & AM_DIR) {                    /* ディレクトリ */
+ 111              		.loc 1 25 0
+ 112 0068 006050E2 		subs	r6, r0, #0
+ 113              	@ SUCC: 12 [3.0%]  (CAN_FALLTHRU,LOOP_EXIT) 7 [97.0%]  (FALLTHRU,CAN_FALLTHRU)
+ 114 006c 1700001A 		bne	.L4
+ 115              	@ BLOCK 7 freq:9700 seq:5
+ 116              	@ PRED: 6 [97.0%]  (FALLTHRU,CAN_FALLTHRU)
+ 117              		@ main.c:25
+  25:main.c        ****             if (fno.fattrib & AM_DIR) {                    /* ディレクトリ */
+ 118              		.loc 1 25 0 is_stmt 0
+ 119 0070 0930D4E5 		ldrb	r3, [r4, #9]	@ zero_extendqisi2
+ 120 0074 000053E3 		cmp	r3, #0
+ 121              	@ SUCC: 12 [3.0%]  (CAN_FALLTHRU,LOOP_EXIT) 8 [97.0%]  (FALLTHRU,CAN_FALLTHRU)
+ 122 0078 1400000A 		beq	.L4
+ 123              	@ BLOCK 8 freq:9409 seq:6
+ 124              	@ PRED: 7 [97.0%]  (FALLTHRU,CAN_FALLTHRU)
+ 125              		@ main.c:26
+  26:main.c        ****                 i = xstrlen(path);
+ 126              		.loc 1 26 0 is_stmt 1
+ 127 007c 0830D4E5 		ldrb	r3, [r4, #8]	@ zero_extendqisi2
+ 128 0080 100013E3 		tst	r3, #16
+ 129              	@ SUCC: 9 [50.0%]  (FALLTHRU,CAN_FALLTHRU) 4 [50.0%]  (CAN_FALLTHRU)
+ 130 0084 EBFFFF0A 		beq	.L5
+ 131              	@ BLOCK 9 freq:4705 seq:7
+ 132              	@ PRED: 8 [50.0%]  (FALLTHRU,CAN_FALLTHRU)
+ 133              		@ main.c:27
+  27:main.c        ****                 xsprintf(&path[i], "/%s", fno.fname);
+ 134              		.loc 1 27 0
+ 135 0088 0500A0E1 		mov	r0, r5
+ 136              	.LVL7:
+ 137 008c FEFFFFEB 		bl	xstrlen
+ 138              	.LVL8:
+ 139 0090 0070A0E1 		mov	r7, r0
+ 140              	.LVL9:
+ 141              		@ main.c:28
+  28:main.c        ****                 res = scan_files(path);                    /* 一つ下へ */
+ 142              		.loc 1 28 0
+ 143 0094 0820A0E1 		mov	r2, r8
+ 144 0098 0910A0E1 		mov	r1, r9
+ 145 009c 000085E0 		add	r0, r5, r0
+ 146              	.LVL10:
+ 147 00a0 FEFFFFEB 		bl	xsprintf
+ 148              	.LVL11:
+ 149              		@ main.c:29
+  29:main.c        ****                 if (res != FR_OK) break;
+ 150              		.loc 1 29 0
+ 151 00a4 0500A0E1 		mov	r0, r5
+ 152 00a8 FEFFFFEB 		bl	scan_files
+ 153              	.LVL12:
+ 154              		@ main.c:30
+  30:main.c        ****                 path[i] = 0;
+ 155              		.loc 1 30 0
+ 156 00ac 006050E2 		subs	r6, r0, #0
+ 157              	@ SUCC: 12 [3.0%]  (CAN_FALLTHRU,LOOP_EXIT) 10 [97.0%]  (FALLTHRU,CAN_FALLTHRU)
+ 158 00b0 0600001A 		bne	.L4
+ 159              	@ BLOCK 10 freq:4563 seq:8
+ 160              	@ PRED: 9 [97.0%]  (FALLTHRU,CAN_FALLTHRU)
+ 161              		@ main.c:31
+  31:main.c        ****             } else {                                       /* ファイル */
+ 162              		.loc 1 31 0
+ 163 00b4 0030A0E3 		mov	r3, #0
+ 164 00b8 0730C5E7 		strb	r3, [r5, r7]
+ 165              	@ SUCC: 6 [100.0%]  (DFS_BACK,CAN_FALLTHRU)
+ 166 00bc E6FFFFEA 		b	.L8
+ 167              	.LVL13:
+ 168              	@ BLOCK 11 freq:2352 seq:9
+ 169              	@ PRED: 4 [50.0%]  (CAN_FALLTHRU)
+ 170              	.L7:
+ 171              		@ main.c:34
+ 172              		.loc 1 34 0
+ 173 00c0 0810A0E1 		mov	r1, r8
+ 174 00c4 0B00A0E1 		mov	r0, fp
+ 175 00c8 FEFFFFEB 		bl	xprintf
+ 176              	.LVL14:
+ 177              	@ SUCC: 6 [100.0%]  (DFS_BACK,CAN_FALLTHRU)
+ 178 00cc E2FFFFEA 		b	.L8
+ 179              	.LVL15:
+ 180              	@ BLOCK 12 freq:732 seq:10
+ 181              	@ PRED: 6 [3.0%]  (CAN_FALLTHRU,LOOP_EXIT) 7 [3.0%]  (CAN_FALLTHRU,LOOP_EXIT) 9 [3.0%]  (CAN_FALLTH
+ 182              	.L4:
+ 183              		@ main.c:37
+  35:main.c        ****             }
+  36:main.c        ****         }
+  37:main.c        ****         f_closedir(&dir);
+ 184              		.loc 1 37 0
+ 185 00d0 0D00A0E1 		mov	r0, sp
+ 186              	@ SUCC: 13 [100.0%]  (FALLTHRU,CAN_FALLTHRU)
+ 187 00d4 FEFFFFEB 		bl	f_closedir
+ 188              	.LVL16:
+ 189              	@ BLOCK 13 freq:1200 seq:11
+ 190              	@ PRED: 12 [100.0%]  (FALLTHRU,CAN_FALLTHRU) 2 [39.0%]  (CAN_FALLTHRU)
+ 191              	.L3:
+ 192              		@ main.c:41
+  38:main.c        ****     }
+  39:main.c        **** 
+  40:main.c        ****     return res;
+  41:main.c        **** }
+ 193              		.loc 1 41 0
+ 194 00d8 0600A0E1 		mov	r0, r6
+ 195 00dc 34D08DE2 		add	sp, sp, #52
+ 196              	.LCFI2:
+ 197              		.cfi_def_cfa_offset 36
+ 198              		@ sp needed
+ 199 00e0 F04FBDE8 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 200              	.LCFI3:
+ 201              		.cfi_restore 14
+ 202              		.cfi_restore 11
+ 203              		.cfi_restore 10
+ 204              		.cfi_restore 9
+ 205              		.cfi_restore 8
+ 206              		.cfi_restore 7
+ 207              		.cfi_restore 6
+ 208              		.cfi_restore 5
+ 209              		.cfi_restore 4
+ 210              		.cfi_def_cfa_offset 0
+ 211              	.LVL17:
+ 212              	@ SUCC: EXIT [100.0%] 
+ 213 00e4 1EFF2FE1 		bx	lr
+ 214              	.L11:
+ 215              		.align	2
+ 216              	.L10:
+ 217 00e8 00000000 		.word	.LANCHOR0
+ 218 00ec 04000000 		.word	.LC1
+ 219 00f0 10000000 		.word	.LC3
+ 220 00f4 00000000 		.word	.LC0
+ 221 00f8 08000000 		.word	.LC2
+ 222              		.cfi_endproc
+ 223              	.LFE1:
+ 225              		.align	2
+ 226              		.global	main
+ 227              		.syntax unified
+ 228              		.arm
+ 229              		.fpu softvfp
+ 231              	main:
+ 232              	.LFB2:
+ 233              		@ main.c:45
+  42:main.c        **** 
+  43:main.c        **** 
+  44:main.c        **** int main (void)
+  45:main.c        **** {
+ 234              		.loc 1 45 0
+ 235              		.cfi_startproc
+ 236              		@ Function supports interworking.
+ 237              		@ args = 0, pretend = 0, frame = 0
+ 238              		@ frame_needed = 0, uses_anonymous_args = 0
+ 239              	@ BLOCK 2 freq:10000 seq:0
+ 240              	@ PRED: ENTRY [100.0%]  (FALLTHRU)
+ 241 00fc 10402DE9 		push	{r4, lr}
+ 242              	.LCFI4:
+ 243              		.cfi_def_cfa_offset 8
+ 244              		.cfi_offset 4, -8
+ 245              		.cfi_offset 14, -4
+ 246              		@ main.c:49
+  46:main.c        ****     FRESULT res;
+  47:main.c        **** 
+  48:main.c        **** 
+  49:main.c        ****     xprintf("\n");
+ 247              		.loc 1 49 0
+ 248 0100 50009FE5 		ldr	r0, .L17
+ 249 0104 FEFFFFEB 		bl	xprintf
+ 250              	.LVL18:
+ 251              		@ main.c:50
+  50:main.c        ****     res = f_mount(&fs, "", 1);
+ 252              		.loc 1 50 0
+ 253 0108 0120A0E3 		mov	r2, #1
+ 254 010c 48109FE5 		ldr	r1, .L17+4
+ 255 0110 48009FE5 		ldr	r0, .L17+8
+ 256 0114 FEFFFFEB 		bl	f_mount
+ 257              	.LVL19:
+ 258              		@ main.c:51
+  51:main.c        ****     if (res == FR_OK) {
+ 259              		.loc 1 51 0
+ 260 0118 004050E2 		subs	r4, r0, #0
+ 261              	@ SUCC: 5 [39.0%]  (CAN_FALLTHRU) 3 [61.0%]  (FALLTHRU,CAN_FALLTHRU)
+ 262 011c 0400000A 		beq	.L16
+ 263              	@ BLOCK 3 freq:6100 seq:1
+ 264              	@ PRED: 2 [61.0%]  (FALLTHRU,CAN_FALLTHRU)
+ 265              		@ main.c:55
+  52:main.c        ****         xstrncpy_n(buff, "/", 255);
+  53:main.c        ****         res = scan_files(buff);
+  54:main.c        ****     } else {
+  55:main.c        ****         xprintf("Drive not ready\n");
+ 266              		.loc 1 55 0
+ 267 0120 3C009FE5 		ldr	r0, .L17+12
+ 268              	.LVL20:
+ 269              	@ SUCC: 4 [100.0%]  (FALLTHRU,CAN_FALLTHRU)
+ 270 0124 FEFFFFEB 		bl	xprintf
+ 271              	.LVL21:
+ 272              	@ BLOCK 4 freq:10000 seq:2
+ 273              	@ PRED: 3 [100.0%]  (FALLTHRU,CAN_FALLTHRU) 5 [100.0%]  (CAN_FALLTHRU)
+ 274              	.L14:
+ 275              		@ main.c:59
+  56:main.c        ****     }
+  57:main.c        **** 
+  58:main.c        ****     return res;
+  59:main.c        **** }
+ 276              		.loc 1 59 0
+ 277 0128 0400A0E1 		mov	r0, r4
+ 278 012c 1040BDE8 		pop	{r4, lr}
+ 279              	.LCFI5:
+ 280              		.cfi_remember_state
+ 281              		.cfi_restore 14
+ 282              		.cfi_restore 4
+ 283              		.cfi_def_cfa_offset 0
+ 284              	.LVL22:
+ 285              	@ SUCC: EXIT [100.0%] 
+ 286 0130 1EFF2FE1 		bx	lr
+ 287              	.LVL23:
+ 288              	@ BLOCK 5 freq:3900 seq:3
+ 289              	@ PRED: 2 [39.0%]  (CAN_FALLTHRU)
+ 290              	.L16:
+ 291              	.LCFI6:
+ 292              		.cfi_restore_state
+ 293              		@ main.c:52
+  52:main.c        ****         xstrncpy_n(buff, "/", 255);
+ 294              		.loc 1 52 0
+ 295 0134 2C409FE5 		ldr	r4, .L17+16
+ 296 0138 FF20A0E3 		mov	r2, #255
+ 297 013c 28109FE5 		ldr	r1, .L17+20
+ 298 0140 0400A0E1 		mov	r0, r4
+ 299              	.LVL24:
+ 300 0144 FEFFFFEB 		bl	xstrncpy_n
+ 301              	.LVL25:
+ 302              		@ main.c:53
+  53:main.c        ****     } else {
+ 303              		.loc 1 53 0
+ 304 0148 0400A0E1 		mov	r0, r4
+ 305 014c FEFFFFEB 		bl	scan_files
+ 306              	.LVL26:
+ 307 0150 0040A0E1 		mov	r4, r0
+ 308              	.LVL27:
+ 309              	@ SUCC: 4 [100.0%]  (CAN_FALLTHRU)
+ 310 0154 F3FFFFEA 		b	.L14
+ 311              	.L18:
+ 312              		.align	2
+ 313              	.L17:
+ 314 0158 18000000 		.word	.LC4
+ 315 015c 1C000000 		.word	.LC5
+ 316 0160 00000000 		.word	fs
+ 317 0164 20000000 		.word	.LC6
+ 318 0168 00000000 		.word	buff
+ 319 016c 04000000 		.word	.LC1
+ 320              		.cfi_endproc
+ 321              	.LFE2:
+ 323              		.comm	buff,256,4
+ 324              		.comm	fs,564,4
+ 325              		.bss
+ 326              		.align	2
+ 327              		.set	.LANCHOR0,. + 0
+ 330              	fno.4502:
+ 331 0000 00000000 		.space	24
+ 331      00000000 
+ 331      00000000 
+ 331      00000000 
+ 331      00000000 
+ 332              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 333              		.align	2
+ 334              	.LC0:
+ 335 0000 2F257300 		.ascii	"/%s\000"
+ 336              	.LC1:
+ 337 0004 2F00     		.ascii	"/\000"
+ 338 0006 0000     		.space	2
+ 339              	.LC2:
+ 340 0008 25732F25 		.ascii	"%s/%s\012\000"
+ 340      730A00
+ 341 000f 00       		.space	1
+ 342              	.LC3:
+ 343 0010 2F25730A 		.ascii	"/%s\012\000"
+ 343      00
+ 344 0015 000000   		.space	3
+ 345              	.LC4:
+ 346 0018 0A00     		.ascii	"\012\000"
+ 347 001a 0000     		.space	2
+ 348              	.LC5:
+ 349 001c 00       		.ascii	"\000"
+ 350 001d 000000   		.space	3
+ 351              	.LC6:
+ 352 0020 44726976 		.ascii	"Drive not ready\012\000"
+ 352      65206E6F 
+ 352      74207265 
+ 352      6164790A 
+ 352      00
+ 353              		.text
+ 354              	.Letext0:
+ 355              		.file 2 "../../include/integer.h"
+ 356              		.file 3 "../../include/ff.h"
+ 357              		.file 4 "../../include/xprintf.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+          obj/main.s:15     .text:00000000 $a
+          obj/main.s:21     .text:00000000 scan_files
+          obj/main.s:217    .text:000000e8 $d
+          obj/main.s:225    .text:000000fc $a
+          obj/main.s:231    .text:000000fc main
+          obj/main.s:314    .text:00000158 $d
+                            *COM*:00000234 fs
+                            *COM*:00000100 buff
+          obj/main.s:326    .bss:00000000 $d
+          obj/main.s:330    .bss:00000000 fno.4502
+          obj/main.s:333    .rodata.str1.4:00000000 $d
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+f_opendir
+xstrcmp
+xprintf
+f_readdir
+xstrlen
+xsprintf
+f_closedir
+f_mount
+xstrncpy_n

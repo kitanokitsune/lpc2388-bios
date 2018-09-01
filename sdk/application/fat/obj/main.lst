@@ -1,0 +1,807 @@
+   1              		.cpu arm7tdmi-s
+   2              		.eabi_attribute 20, 1	@ Tag_ABI_FP_denormal
+   3              		.eabi_attribute 21, 1	@ Tag_ABI_FP_exceptions
+   4              		.eabi_attribute 23, 3	@ Tag_ABI_FP_number_model
+   5              		.eabi_attribute 24, 1	@ Tag_ABI_align8_needed
+   6              		.eabi_attribute 25, 1	@ Tag_ABI_align8_preserved
+   7              		.eabi_attribute 26, 1	@ Tag_ABI_enum_size
+   8              		.eabi_attribute 30, 1	@ Tag_ABI_optimization_goals
+   9              		.eabi_attribute 34, 0	@ Tag_CPU_unaligned_access
+  10              		.eabi_attribute 18, 4	@ Tag_ABI_PCS_wchar_t
+  11              		.file	"main.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.align	2
+  16              		.global	wait_msec
+  17              		.syntax unified
+  18              		.arm
+  19              		.fpu softvfp
+  21              	wait_msec:
+  22              	.LFB1:
+  23              		.file 1 "main.c"
+  24              		@ main.c:11
+   1:main.c        **** 
+   2:main.c        **** #include "lpc2300.h"
+   3:main.c        **** #include "bios2388.h"
+   4:main.c        **** #include "diskio.h"
+   5:main.c        **** #include "ff.h"			/* Declarations of FatFs API */
+   6:main.c        **** #include "xprintf.h"
+   7:main.c        **** #include "lcd1602.h"
+   8:main.c        **** 
+   9:main.c        **** /* タイマーを使った msec 単位の wait */
+  10:main.c        **** void wait_msec(unsigned int msec)
+  11:main.c        **** {
+  25              		.loc 1 11 0
+  26              		.cfi_startproc
+  27              		@ Function supports interworking.
+  28              		@ args = 0, pretend = 0, frame = 0
+  29              		@ frame_needed = 0, uses_anonymous_args = 0
+  30              		@ link register save eliminated.
+  31              	.LVL0:
+  32              	@ BLOCK 2 freq:900 seq:0
+  33              	@ PRED: ENTRY [100.0%]  (FALLTHRU)
+  34              		@ main.c:13
+  12:main.c        ****     unsigned int usec;
+  13:main.c        ****     usec = msec * 1000;
+  35              		.loc 1 13 0
+  36 0000 803260E0 		rsb	r3, r0, r0, lsl #5
+  37 0004 030180E0 		add	r0, r0, r3, lsl #2
+  38              	.LVL1:
+  39 0008 8001A0E1 		lsl	r0, r0, #3
+  40              	.LVL2:
+  41              		@ main.c:15
+  14:main.c        **** 
+  15:main.c        ****     T0TCR = 0x02; //Reset Timer
+  42              		.loc 1 15 0
+  43 000c 20309FE5 		ldr	r3, .L4
+  44 0010 0220A0E3 		mov	r2, #2
+  45 0014 042083E5 		str	r2, [r3, #4]
+  46              		@ main.c:16
+  16:main.c        ****     T0TCR = 0x01; //Enable timer
+  47              		.loc 1 16 0
+  48 0018 0120A0E3 		mov	r2, #1
+  49 001c 042083E5 		str	r2, [r3, #4]
+  50              	@ SUCC: 3 [100.0%]  (FALLTHRU,CAN_FALLTHRU)
+  51              		@ main.c:17
+  17:main.c        ****     while(T0TC < usec);
+  52              		.loc 1 17 0
+  53 0020 0320A0E1 		mov	r2, r3
+  54              	@ BLOCK 3 freq:10000 seq:1
+  55              	@ PRED: 2 [100.0%]  (FALLTHRU,CAN_FALLTHRU) 3 [91.0%]  (DFS_BACK,CAN_FALLTHRU)
+  56              	.L2:
+  57              		@ main.c:17
+  58              		.loc 1 17 0 is_stmt 0
+  59 0024 083092E5 		ldr	r3, [r2, #8]
+  60 0028 030050E1 		cmp	r0, r3
+  61              	@ SUCC: 3 [91.0%]  (DFS_BACK,CAN_FALLTHRU) 4 [9.0%]  (FALLTHRU,CAN_FALLTHRU,LOOP_EXIT)
+  62 002c FCFFFF8A 		bhi	.L2
+  63              	@ BLOCK 4 freq:900 seq:2
+  64              	@ PRED: 3 [9.0%]  (FALLTHRU,CAN_FALLTHRU,LOOP_EXIT)
+  65              	@ SUCC: EXIT [100.0%] 
+  66              		@ main.c:19
+  18:main.c        **** //    T0TCR = 0x00; //Disable timer
+  19:main.c        **** }
+  67              		.loc 1 19 0 is_stmt 1
+  68 0030 1EFF2FE1 		bx	lr
+  69              	.L5:
+  70              		.align	2
+  71              	.L4:
+  72 0034 004000E0 		.word	-536854528
+  73              		.cfi_endproc
+  74              	.LFE1:
+  76              		.align	2
+  77              		.global	rc2msg
+  78              		.syntax unified
+  79              		.arm
+  80              		.fpu softvfp
+  82              	rc2msg:
+  83              	.LFB2:
+  84              		@ main.c:23
+  20:main.c        **** 
+  21:main.c        **** 
+  22:main.c        **** void rc2msg(char *f, FRESULT rc)
+  23:main.c        **** {
+  85              		.loc 1 23 0
+  86              		.cfi_startproc
+  87              		@ Function supports interworking.
+  88              		@ args = 0, pretend = 0, frame = 0
+  89              		@ frame_needed = 0, uses_anonymous_args = 0
+  90              	.LVL3:
+  91              	@ BLOCK 2 freq:9998 seq:0
+  92              	@ PRED: ENTRY [100.0%]  (FALLTHRU)
+  93 0038 10402DE9 		push	{r4, lr}
+  94              	.LCFI0:
+  95              		.cfi_def_cfa_offset 8
+  96              		.cfi_offset 4, -8
+  97              		.cfi_offset 14, -4
+  98 003c 0140A0E1 		mov	r4, r1
+  99              		@ main.c:24
+  24:main.c        ****     xprintf(f);
+ 100              		.loc 1 24 0
+ 101 0040 FEFFFFEB 		bl	xprintf
+ 102              	.LVL4:
+ 103              	@ SUCC: 9 7 [20.0%]  3 [20.0%]  8 [20.0%]  5 [20.0%]  6 [20.0%] 
+ 104              		@ main.c:25
+  25:main.c        ****     switch (rc) {
+ 105              		.loc 1 25 0
+ 106 0044 040054E3 		cmp	r4, #4
+ 107 0048 04F19F97 		ldrls	pc, [pc, r4, asl #2]
+ 108 004c 140000EA 		b	.L7
+ 109              	.L9:
+ 110 0050 8C000000 		.word	.L8
+ 111 0054 64000000 		.word	.L10
+ 112 0058 98000000 		.word	.L11
+ 113 005c 74000000 		.word	.L12
+ 114 0060 80000000 		.word	.L13
+ 115              	@ BLOCK 3 freq:1667 seq:1
+ 116              	@ PRED: 2 [20.0%] 
+ 117              	.L10:
+ 118              		@ main.c:26
+  26:main.c        ****       case RES_ERROR:  xprintf(": R/W Error\n"); break;
+ 119              		.loc 1 26 0
+ 120 0064 48009FE5 		ldr	r0, .L16
+ 121              	@ SUCC: 4 [100.0%]  (FALLTHRU,CAN_FALLTHRU)
+ 122 0068 FEFFFFEB 		bl	xprintf
+ 123              	.LVL5:
+ 124              	@ BLOCK 4 freq:10000 seq:2
+ 125              	@ PRED: 8 [100.0%]  (CAN_FALLTHRU) 6 [100.0%]  (CAN_FALLTHRU) 3 [100.0%]  (FALLTHRU,CAN_FALLTHRU) 7
+ 126              	.L6:
+ 127              		@ main.c:33
+  27:main.c        ****       case RES_NOTRDY: xprintf(": Drive Not Ready\n"); break;
+  28:main.c        ****       case RES_PARERR: xprintf(": Invalid Paramter\n"); break;
+  29:main.c        ****       case RES_OK:     xprintf(": OK\n"); break;
+  30:main.c        ****       case RES_WRPRT:  xprintf(": Media Write Protedted\n"); break;
+  31:main.c        ****       default: xprintf(": returns code=%d\n",rc);break;
+  32:main.c        ****     }
+  33:main.c        **** }
+ 128              		.loc 1 33 0
+ 129 006c 1040BDE8 		pop	{r4, lr}
+ 130              	.LCFI1:
+ 131              		.cfi_remember_state
+ 132              		.cfi_restore 14
+ 133              		.cfi_restore 4
+ 134              		.cfi_def_cfa_offset 0
+ 135              	@ SUCC: EXIT [100.0%] 
+ 136 0070 1EFF2FE1 		bx	lr
+ 137              	@ BLOCK 5 freq:1667 seq:3
+ 138              	@ PRED: 2 [20.0%] 
+ 139              	.L12:
+ 140              	.LCFI2:
+ 141              		.cfi_restore_state
+ 142              		@ main.c:27
+  27:main.c        ****       case RES_NOTRDY: xprintf(": Drive Not Ready\n"); break;
+ 143              		.loc 1 27 0
+ 144 0074 3C009FE5 		ldr	r0, .L16+4
+ 145 0078 FEFFFFEB 		bl	xprintf
+ 146              	.LVL6:
+ 147              	@ SUCC: 4 [100.0%]  (CAN_FALLTHRU)
+ 148 007c FAFFFFEA 		b	.L6
+ 149              	@ BLOCK 6 freq:1667 seq:4
+ 150              	@ PRED: 2 [20.0%] 
+ 151              	.L13:
+ 152              		@ main.c:28
+  28:main.c        ****       case RES_OK:     xprintf(": OK\n"); break;
+ 153              		.loc 1 28 0
+ 154 0080 34009FE5 		ldr	r0, .L16+8
+ 155 0084 FEFFFFEB 		bl	xprintf
+ 156              	.LVL7:
+ 157              	@ SUCC: 4 [100.0%]  (CAN_FALLTHRU)
+ 158 0088 F7FFFFEA 		b	.L6
+ 159              	@ BLOCK 7 freq:1667 seq:5
+ 160              	@ PRED: 2 [20.0%] 
+ 161              	.L8:
+ 162              		@ main.c:29
+  29:main.c        ****       case RES_WRPRT:  xprintf(": Media Write Protedted\n"); break;
+ 163              		.loc 1 29 0
+ 164 008c 2C009FE5 		ldr	r0, .L16+12
+ 165 0090 FEFFFFEB 		bl	xprintf
+ 166              	.LVL8:
+ 167              	@ SUCC: 4 [100.0%]  (CAN_FALLTHRU)
+ 168 0094 F4FFFFEA 		b	.L6
+ 169              	@ BLOCK 8 freq:1667 seq:6
+ 170              	@ PRED: 2 [20.0%] 
+ 171              	.L11:
+ 172              		@ main.c:30
+  30:main.c        ****       default: xprintf(": returns code=%d\n",rc);break;
+ 173              		.loc 1 30 0
+ 174 0098 24009FE5 		ldr	r0, .L16+16
+ 175 009c FEFFFFEB 		bl	xprintf
+ 176              	.LVL9:
+ 177              	@ SUCC: 4 [100.0%]  (CAN_FALLTHRU)
+ 178 00a0 F1FFFFEA 		b	.L6
+ 179              	@ BLOCK 9 freq:1667 seq:7
+ 180              	@ PRED: 2
+ 181              	.L7:
+ 182              		@ main.c:31
+  31:main.c        ****     }
+ 183              		.loc 1 31 0
+ 184 00a4 0410A0E1 		mov	r1, r4
+ 185 00a8 18009FE5 		ldr	r0, .L16+20
+ 186 00ac FEFFFFEB 		bl	xprintf
+ 187              	.LVL10:
+ 188              	@ SUCC: 4 [100.0%]  (CAN_FALLTHRU)
+ 189              		@ main.c:33
+ 190              		.loc 1 33 0
+ 191 00b0 EDFFFFEA 		b	.L6
+ 192              	.L17:
+ 193              		.align	2
+ 194              	.L16:
+ 195 00b4 00000000 		.word	.LC0
+ 196 00b8 10000000 		.word	.LC1
+ 197 00bc 24000000 		.word	.LC2
+ 198 00c0 38000000 		.word	.LC3
+ 199 00c4 40000000 		.word	.LC4
+ 200 00c8 5C000000 		.word	.LC5
+ 201              		.cfi_endproc
+ 202              	.LFE2:
+ 204              		.align	2
+ 205              		.global	main
+ 206              		.syntax unified
+ 207              		.arm
+ 208              		.fpu softvfp
+ 210              	main:
+ 211              	.LFB3:
+ 212              		@ main.c:36
+  34:main.c        **** 
+  35:main.c        **** int main (void)
+  36:main.c        **** {
+ 213              		.loc 1 36 0
+ 214              		.cfi_startproc
+ 215              		@ Function supports interworking.
+ 216              		@ args = 0, pretend = 0, frame = 616
+ 217              		@ frame_needed = 0, uses_anonymous_args = 0
+ 218              	@ BLOCK 2 freq:2309 seq:0
+ 219              	@ PRED: ENTRY [100.0%]  (FALLTHRU)
+ 220 00cc 30402DE9 		push	{r4, r5, lr}
+ 221              	.LCFI3:
+ 222              		.cfi_def_cfa_offset 12
+ 223              		.cfi_offset 4, -12
+ 224              		.cfi_offset 5, -8
+ 225              		.cfi_offset 14, -4
+ 226 00d0 9BDF4DE2 		sub	sp, sp, #620
+ 227              	.LCFI4:
+ 228              		.cfi_def_cfa_offset 632
+ 229              		@ main.c:43
+  37:main.c        **** 	FIL Fil;	/* File object needed for each open file */
+  38:main.c        ****     FATFS FatFs; /* FatFs work area needed for each volume */
+  39:main.c        ****     UINT bw;
+  40:main.c        ****     FRESULT rc;
+  41:main.c        ****     unsigned char rbuf[2];
+  42:main.c        **** 
+  43:main.c        ****     xdev_out(uart0_putc);
+ 230              		.loc 1 43 0
+ 231 00d4 FC219FE5 		ldr	r2, .L26
+ 232 00d8 FC319FE5 		ldr	r3, .L26+4
+ 233 00dc 002083E5 		str	r2, [r3]
+ 234              		@ main.c:44
+  44:main.c        ****     xdev_in(uart0_getc);
+ 235              		.loc 1 44 0
+ 236 00e0 F8219FE5 		ldr	r2, .L26+8
+ 237 00e4 F8319FE5 		ldr	r3, .L26+12
+ 238 00e8 002083E5 		str	r2, [r3]
+ 239              		@ main.c:46
+  45:main.c        **** 
+  46:main.c        ****     LCD_Init();
+ 240              		.loc 1 46 0
+ 241 00ec FEFFFFEB 		bl	LCD_Init
+ 242              	.LVL11:
+ 243              		@ main.c:47
+  47:main.c        ****     LCD_Clear();
+ 244              		.loc 1 47 0
+ 245 00f0 0110A0E3 		mov	r1, #1
+ 246 00f4 0000A0E3 		mov	r0, #0
+ 247 00f8 FEFFFFEB 		bl	LCD_Write
+ 248              	.LVL12:
+ 249              		@ main.c:48
+  48:main.c        ****     LCD_Puts("Hello!",6);
+ 250              		.loc 1 48 0
+ 251 00fc 0610A0E3 		mov	r1, #6
+ 252 0100 E0019FE5 		ldr	r0, .L26+16
+ 253 0104 FEFFFFEB 		bl	LCD_Puts
+ 254              	.LVL13:
+ 255              		@ main.c:49
+  49:main.c        ****     LCD_SetCursorPos(5, 0);
+ 256              		.loc 1 49 0
+ 257 0108 8510A0E3 		mov	r1, #133
+ 258 010c 0000A0E3 		mov	r0, #0
+ 259 0110 FEFFFFEB 		bl	LCD_Write
+ 260              	.LVL14:
+ 261              		@ main.c:51
+  50:main.c        **** 
+  51:main.c        ****     FIO1DIR_B.B18=1; FIO1PIN_B.B18=1;
+ 262              		.loc 1 51 0
+ 263 0114 D0319FE5 		ldr	r3, .L26+20
+ 264 0118 DD2053E5 		ldrb	r2, [r3, #-221]	@ zero_extendqisi2
+ 265 011c 042082E3 		orr	r2, r2, #4
+ 266 0120 DD2043E5 		strb	r2, [r3, #-221]
+ 267 0124 C92053E5 		ldrb	r2, [r3, #-201]	@ zero_extendqisi2
+ 268 0128 042082E3 		orr	r2, r2, #4
+ 269 012c C92043E5 		strb	r2, [r3, #-201]
+ 270              		@ main.c:52
+  52:main.c        ****     xprintf("\n*** Mount Drive ***\n");
+ 271              		.loc 1 52 0
+ 272 0130 B8019FE5 		ldr	r0, .L26+24
+ 273 0134 FEFFFFEB 		bl	xprintf
+ 274              	.LVL15:
+ 275              		@ main.c:53
+  53:main.c        **** 	rc = f_mount(&FatFs, "", 1);		/* Give a work area to the default drive */
+ 276              		.loc 1 53 0
+ 277 0138 0120A0E3 		mov	r2, #1
+ 278 013c B0119FE5 		ldr	r1, .L26+28
+ 279 0140 08008DE2 		add	r0, sp, #8
+ 280 0144 FEFFFFEB 		bl	f_mount
+ 281              	.LVL16:
+ 282              		@ main.c:54
+  54:main.c        ****     rc2msg("f_mount()", rc);
+ 283              		.loc 1 54 0
+ 284 0148 0010A0E1 		mov	r1, r0
+ 285 014c A4019FE5 		ldr	r0, .L26+32
+ 286              	.LVL17:
+ 287 0150 FEFFFFEB 		bl	rc2msg
+ 288              	.LVL18:
+ 289              		@ main.c:56
+  55:main.c        **** 
+  56:main.c        ****     xprintf("\n*** Create NEWFILE.TXT ***\n");
+ 290              		.loc 1 56 0
+ 291 0154 A0019FE5 		ldr	r0, .L26+36
+ 292 0158 FEFFFFEB 		bl	xprintf
+ 293              	.LVL19:
+ 294              		@ main.c:57
+  57:main.c        ****     rc = f_open(&Fil, "newfile.txt", FA_WRITE | FA_CREATE_ALWAYS);
+ 295              		.loc 1 57 0
+ 296 015c 0A20A0E3 		mov	r2, #10
+ 297 0160 98119FE5 		ldr	r1, .L26+40
+ 298 0164 8F0F8DE2 		add	r0, sp, #572
+ 299 0168 FEFFFFEB 		bl	f_open
+ 300              	.LVL20:
+ 301 016c 0040A0E1 		mov	r4, r0
+ 302              	.LVL21:
+ 303              		@ main.c:58
+  58:main.c        ****     rc2msg("f_open()",rc);
+ 304              		.loc 1 58 0
+ 305 0170 0010A0E1 		mov	r1, r0
+ 306 0174 88019FE5 		ldr	r0, .L26+44
+ 307              	.LVL22:
+ 308 0178 FEFFFFEB 		bl	rc2msg
+ 309              	.LVL23:
+ 310              		@ main.c:59
+  59:main.c        **** 	if (rc == FR_OK) {	/* Create a file */
+ 311              		.loc 1 59 0
+ 312 017c 000054E3 		cmp	r4, #0
+ 313              	@ SUCC: 5 [29.0%]  (CAN_FALLTHRU) 3 [71.0%]  (FALLTHRU,CAN_FALLTHRU)
+ 314 0180 2500000A 		beq	.L24
+ 315              	@ BLOCK 3 freq:2309 seq:1
+ 316              	@ PRED: 2 [71.0%]  (FALLTHRU,CAN_FALLTHRU) 5 [72.0%]  (CAN_FALLTHRU) 6 [100.0%]  (CAN_FALLTHRU)
+ 317              	.L19:
+ 318              		@ main.c:72
+  60:main.c        **** 
+  61:main.c        ****         rc = f_write(&Fil, "Hello to world!\n", 18, &bw);	/* Write data to the file */
+  62:main.c        ****         rc2msg("f_write()",rc);
+  63:main.c        **** 
+  64:main.c        **** 		rc = f_close(&Fil);								/* Close the file */
+  65:main.c        ****         rc2msg("f_close()",rc);
+  66:main.c        **** 
+  67:main.c        **** 		if (bw == 18) {		/* Lights green LED if data written well */
+  68:main.c        **** 			FIO1DIR_B.B18=1; FIO1PIN_B.B18=0;
+  69:main.c        **** 		}
+  70:main.c        ****     }
+  71:main.c        **** 
+  72:main.c        ****     xprintf("\n*** Read NEWFILE.TXT ***\n");
+ 319              		.loc 1 72 0
+ 320 0184 7C019FE5 		ldr	r0, .L26+48
+ 321 0188 FEFFFFEB 		bl	xprintf
+ 322              	.LVL24:
+ 323              		@ main.c:73
+  73:main.c        ****     rc = f_open(&Fil, "newfile.txt", FA_READ);
+ 324              		.loc 1 73 0
+ 325 018c 0120A0E3 		mov	r2, #1
+ 326 0190 68119FE5 		ldr	r1, .L26+40
+ 327 0194 8F0F8DE2 		add	r0, sp, #572
+ 328 0198 FEFFFFEB 		bl	f_open
+ 329              	.LVL25:
+ 330 019c 0040A0E1 		mov	r4, r0
+ 331              	.LVL26:
+ 332              		@ main.c:74
+  74:main.c        ****     rc2msg("f_open()",rc);
+ 333              		.loc 1 74 0
+ 334 01a0 0010A0E1 		mov	r1, r0
+ 335 01a4 58019FE5 		ldr	r0, .L26+44
+ 336              	.LVL27:
+ 337 01a8 FEFFFFEB 		bl	rc2msg
+ 338              	.LVL28:
+ 339              		@ main.c:75
+  75:main.c        ****     if (rc == FR_OK) {
+ 340              		.loc 1 75 0
+ 341 01ac 000054E3 		cmp	r4, #0
+ 342              	@ SUCC: 7 [39.0%]  (CAN_FALLTHRU) 4 [61.0%]  (FALLTHRU,CAN_FALLTHRU)
+ 343 01b0 3100000A 		beq	.L25
+ 344              	@ BLOCK 4 freq:2309 seq:2
+ 345              	@ PRED: 3 [61.0%]  (FALLTHRU,CAN_FALLTHRU) 9 [100.0%]  (CAN_FALLTHRU)
+ 346              	.L20:
+ 347              		@ main.c:86
+  76:main.c        ****         xprintf("---- f_read() start ----\n");
+  77:main.c        ****         do {
+  78:main.c        ****             rc = f_read(&Fil, rbuf, 1, &bw);
+  79:main.c        ****             xprintf("%c", rbuf[0]);
+  80:main.c        ****         } while (bw);
+  81:main.c        ****         xprintf("\n----- f_read() end -----\n");
+  82:main.c        **** 		rc = f_close(&Fil);
+  83:main.c        ****         rc2msg("f_close()",rc);
+  84:main.c        ****     }
+  85:main.c        **** 
+  86:main.c        ****     wait_msec(1000);
+ 348              		.loc 1 86 0
+ 349 01b4 FA0FA0E3 		mov	r0, #1000
+ 350 01b8 FEFFFFEB 		bl	wait_msec
+ 351              	.LVL29:
+ 352              		@ main.c:87
+  87:main.c        ****     FIO1PIN_B.B18=1;
+ 353              		.loc 1 87 0
+ 354 01bc 28419FE5 		ldr	r4, .L26+20
+ 355 01c0 C93054E5 		ldrb	r3, [r4, #-201]	@ zero_extendqisi2
+ 356 01c4 043083E3 		orr	r3, r3, #4
+ 357 01c8 C93044E5 		strb	r3, [r4, #-201]
+ 358              		@ main.c:88
+  88:main.c        ****     wait_msec(1000);
+ 359              		.loc 1 88 0
+ 360 01cc FA0FA0E3 		mov	r0, #1000
+ 361 01d0 FEFFFFEB 		bl	wait_msec
+ 362              	.LVL30:
+ 363              		@ main.c:89
+  89:main.c        ****     FIO1PIN_B.B18=0;
+ 364              		.loc 1 89 0
+ 365 01d4 C93054E5 		ldrb	r3, [r4, #-201]	@ zero_extendqisi2
+ 366 01d8 0430C3E3 		bic	r3, r3, #4
+ 367 01dc C93044E5 		strb	r3, [r4, #-201]
+ 368              		@ main.c:90
+  90:main.c        ****     wait_msec(1000);
+ 369              		.loc 1 90 0
+ 370 01e0 FA0FA0E3 		mov	r0, #1000
+ 371 01e4 FEFFFFEB 		bl	wait_msec
+ 372              	.LVL31:
+ 373              		@ main.c:91
+  91:main.c        ****     FIO1PIN_B.B18=1;
+ 374              		.loc 1 91 0
+ 375 01e8 C93054E5 		ldrb	r3, [r4, #-201]	@ zero_extendqisi2
+ 376 01ec 043083E3 		orr	r3, r3, #4
+ 377 01f0 C93044E5 		strb	r3, [r4, #-201]
+ 378              		@ main.c:92
+  92:main.c        ****     LCD_Clear();
+ 379              		.loc 1 92 0
+ 380 01f4 0110A0E3 		mov	r1, #1
+ 381 01f8 0000A0E3 		mov	r0, #0
+ 382 01fc FEFFFFEB 		bl	LCD_Write
+ 383              	.LVL32:
+ 384              		@ main.c:93
+  93:main.c        ****     LCD_Puts("Done",4);
+ 385              		.loc 1 93 0
+ 386 0200 0410A0E3 		mov	r1, #4
+ 387 0204 00019FE5 		ldr	r0, .L26+52
+ 388 0208 FEFFFFEB 		bl	LCD_Puts
+ 389              	.LVL33:
+ 390              		@ main.c:95
+  94:main.c        ****     return 0;
+  95:main.c        **** }
+ 391              		.loc 1 95 0
+ 392 020c 0000A0E3 		mov	r0, #0
+ 393 0210 9BDF8DE2 		add	sp, sp, #620
+ 394              	.LCFI5:
+ 395              		.cfi_remember_state
+ 396              		.cfi_def_cfa_offset 12
+ 397              		@ sp needed
+ 398 0214 3040BDE8 		pop	{r4, r5, lr}
+ 399              	.LCFI6:
+ 400              		.cfi_restore 14
+ 401              		.cfi_restore 5
+ 402              		.cfi_restore 4
+ 403              		.cfi_def_cfa_offset 0
+ 404              	@ SUCC: EXIT [100.0%] 
+ 405 0218 1EFF2FE1 		bx	lr
+ 406              	@ BLOCK 5 freq:670 seq:3
+ 407              	@ PRED: 2 [29.0%]  (CAN_FALLTHRU)
+ 408              	.L24:
+ 409              	.LCFI7:
+ 410              		.cfi_restore_state
+ 411              		@ main.c:61
+  61:main.c        ****         rc2msg("f_write()",rc);
+ 412              		.loc 1 61 0
+ 413 021c 04308DE2 		add	r3, sp, #4
+ 414 0220 1220A0E3 		mov	r2, #18
+ 415 0224 E4109FE5 		ldr	r1, .L26+56
+ 416 0228 8F0F8DE2 		add	r0, sp, #572
+ 417 022c FEFFFFEB 		bl	f_write
+ 418              	.LVL34:
+ 419              		@ main.c:62
+  62:main.c        **** 
+ 420              		.loc 1 62 0
+ 421 0230 0010A0E1 		mov	r1, r0
+ 422 0234 D8009FE5 		ldr	r0, .L26+60
+ 423              	.LVL35:
+ 424 0238 FEFFFFEB 		bl	rc2msg
+ 425              	.LVL36:
+ 426              		@ main.c:64
+  64:main.c        ****         rc2msg("f_close()",rc);
+ 427              		.loc 1 64 0
+ 428 023c 8F0F8DE2 		add	r0, sp, #572
+ 429 0240 FEFFFFEB 		bl	f_close
+ 430              	.LVL37:
+ 431              		@ main.c:65
+  65:main.c        **** 
+ 432              		.loc 1 65 0
+ 433 0244 0010A0E1 		mov	r1, r0
+ 434 0248 C8009FE5 		ldr	r0, .L26+64
+ 435              	.LVL38:
+ 436 024c FEFFFFEB 		bl	rc2msg
+ 437              	.LVL39:
+ 438              		@ main.c:67
+  67:main.c        **** 			FIO1DIR_B.B18=1; FIO1PIN_B.B18=0;
+ 439              		.loc 1 67 0
+ 440 0250 04309DE5 		ldr	r3, [sp, #4]
+ 441 0254 120053E3 		cmp	r3, #18
+ 442              	@ SUCC: 6 [28.0%]  (FALLTHRU,CAN_FALLTHRU) 3 [72.0%]  (CAN_FALLTHRU)
+ 443 0258 C9FFFF1A 		bne	.L19
+ 444              	@ BLOCK 6 freq:187 seq:4
+ 445              	@ PRED: 5 [28.0%]  (FALLTHRU,CAN_FALLTHRU)
+ 446              		@ main.c:68
+  68:main.c        **** 		}
+ 447              		.loc 1 68 0
+ 448 025c 88309FE5 		ldr	r3, .L26+20
+ 449 0260 DD2053E5 		ldrb	r2, [r3, #-221]	@ zero_extendqisi2
+ 450 0264 042082E3 		orr	r2, r2, #4
+ 451 0268 DD2043E5 		strb	r2, [r3, #-221]
+ 452 026c C92053E5 		ldrb	r2, [r3, #-201]	@ zero_extendqisi2
+ 453 0270 0420C2E3 		bic	r2, r2, #4
+ 454 0274 C92043E5 		strb	r2, [r3, #-201]
+ 455              	@ SUCC: 3 [100.0%]  (CAN_FALLTHRU)
+ 456 0278 C1FFFFEA 		b	.L19
+ 457              	@ BLOCK 7 freq:900 seq:5
+ 458              	@ PRED: 3 [39.0%]  (CAN_FALLTHRU)
+ 459              	.L25:
+ 460              		@ main.c:76
+  76:main.c        ****         do {
+ 461              		.loc 1 76 0
+ 462 027c 98009FE5 		ldr	r0, .L26+68
+ 463 0280 FEFFFFEB 		bl	xprintf
+ 464              	.LVL40:
+ 465              		@ main.c:78
+  78:main.c        ****             xprintf("%c", rbuf[0]);
+ 466              		.loc 1 78 0
+ 467 0284 0150A0E3 		mov	r5, #1
+ 468              	@ SUCC: 8 [100.0%]  (FALLTHRU,CAN_FALLTHRU)
+ 469              		@ main.c:79
+  79:main.c        ****         } while (bw);
+ 470              		.loc 1 79 0
+ 471 0288 90409FE5 		ldr	r4, .L26+72
+ 472              	@ BLOCK 8 freq:10000 seq:6
+ 473              	@ PRED: 7 [100.0%]  (FALLTHRU,CAN_FALLTHRU) 8 [91.0%]  (DFS_BACK,CAN_FALLTHRU)
+ 474              	.L21:
+ 475              		@ main.c:78
+  78:main.c        ****             xprintf("%c", rbuf[0]);
+ 476              		.loc 1 78 0
+ 477 028c 04308DE2 		add	r3, sp, #4
+ 478 0290 0520A0E1 		mov	r2, r5
+ 479 0294 0D10A0E1 		mov	r1, sp
+ 480 0298 8F0F8DE2 		add	r0, sp, #572
+ 481 029c FEFFFFEB 		bl	f_read
+ 482              	.LVL41:
+ 483              		@ main.c:79
+  79:main.c        ****         } while (bw);
+ 484              		.loc 1 79 0
+ 485 02a0 0010DDE5 		ldrb	r1, [sp]	@ zero_extendqisi2
+ 486 02a4 0400A0E1 		mov	r0, r4
+ 487 02a8 FEFFFFEB 		bl	xprintf
+ 488              	.LVL42:
+ 489              		@ main.c:80
+  80:main.c        ****         xprintf("\n----- f_read() end -----\n");
+ 490              		.loc 1 80 0
+ 491 02ac 04309DE5 		ldr	r3, [sp, #4]
+ 492 02b0 000053E3 		cmp	r3, #0
+ 493              	@ SUCC: 8 [91.0%]  (DFS_BACK,CAN_FALLTHRU) 9 [9.0%]  (FALLTHRU,CAN_FALLTHRU,LOOP_EXIT)
+ 494 02b4 F4FFFF1A 		bne	.L21
+ 495              	@ BLOCK 9 freq:900 seq:7
+ 496              	@ PRED: 8 [9.0%]  (FALLTHRU,CAN_FALLTHRU,LOOP_EXIT)
+ 497              		@ main.c:81
+  81:main.c        **** 		rc = f_close(&Fil);
+ 498              		.loc 1 81 0
+ 499 02b8 64009FE5 		ldr	r0, .L26+76
+ 500 02bc FEFFFFEB 		bl	xprintf
+ 501              	.LVL43:
+ 502              		@ main.c:82
+  82:main.c        ****         rc2msg("f_close()",rc);
+ 503              		.loc 1 82 0
+ 504 02c0 8F0F8DE2 		add	r0, sp, #572
+ 505 02c4 FEFFFFEB 		bl	f_close
+ 506              	.LVL44:
+ 507              		@ main.c:83
+  83:main.c        ****     }
+ 508              		.loc 1 83 0
+ 509 02c8 0010A0E1 		mov	r1, r0
+ 510 02cc 44009FE5 		ldr	r0, .L26+64
+ 511              	.LVL45:
+ 512 02d0 FEFFFFEB 		bl	rc2msg
+ 513              	.LVL46:
+ 514              	@ SUCC: 4 [100.0%]  (CAN_FALLTHRU)
+ 515 02d4 B6FFFFEA 		b	.L20
+ 516              	.L27:
+ 517              		.align	2
+ 518              	.L26:
+ 519 02d8 00000000 		.word	uart0_putc
+ 520 02dc 00000000 		.word	xfunc_out
+ 521 02e0 00000000 		.word	uart0_getc
+ 522 02e4 00000000 		.word	xfunc_in
+ 523 02e8 70000000 		.word	.LC6
+ 524 02ec FFC0FF3F 		.word	1073725695
+ 525 02f0 78000000 		.word	.LC7
+ 526 02f4 90000000 		.word	.LC8
+ 527 02f8 94000000 		.word	.LC9
+ 528 02fc A0000000 		.word	.LC10
+ 529 0300 C0000000 		.word	.LC11
+ 530 0304 CC000000 		.word	.LC12
+ 531 0308 04010000 		.word	.LC16
+ 532 030c 5C010000 		.word	.LC20
+ 533 0310 D8000000 		.word	.LC13
+ 534 0314 EC000000 		.word	.LC14
+ 535 0318 F8000000 		.word	.LC15
+ 536 031c 20010000 		.word	.LC17
+ 537 0320 3C010000 		.word	.LC18
+ 538 0324 40010000 		.word	.LC19
+ 539              		.cfi_endproc
+ 540              	.LFE3:
+ 542              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 543              		.align	2
+ 544              	.LC0:
+ 545 0000 3A20522F 		.ascii	": R/W Error\012\000"
+ 545      57204572 
+ 545      726F720A 
+ 545      00
+ 546 000d 000000   		.space	3
+ 547              	.LC1:
+ 548 0010 3A204472 		.ascii	": Drive Not Ready\012\000"
+ 548      69766520 
+ 548      4E6F7420 
+ 548      52656164 
+ 548      790A00
+ 549 0023 00       		.space	1
+ 550              	.LC2:
+ 551 0024 3A20496E 		.ascii	": Invalid Paramter\012\000"
+ 551      76616C69 
+ 551      64205061 
+ 551      72616D74 
+ 551      65720A00 
+ 552              	.LC3:
+ 553 0038 3A204F4B 		.ascii	": OK\012\000"
+ 553      0A00
+ 554 003e 0000     		.space	2
+ 555              	.LC4:
+ 556 0040 3A204D65 		.ascii	": Media Write Protedted\012\000"
+ 556      64696120 
+ 556      57726974 
+ 556      65205072 
+ 556      6F746564 
+ 557 0059 000000   		.space	3
+ 558              	.LC5:
+ 559 005c 3A207265 		.ascii	": returns code=%d\012\000"
+ 559      7475726E 
+ 559      7320636F 
+ 559      64653D25 
+ 559      640A00
+ 560 006f 00       		.space	1
+ 561              	.LC6:
+ 562 0070 48656C6C 		.ascii	"Hello!\000"
+ 562      6F2100
+ 563 0077 00       		.space	1
+ 564              	.LC7:
+ 565 0078 0A2A2A2A 		.ascii	"\012*** Mount Drive ***\012\000"
+ 565      204D6F75 
+ 565      6E742044 
+ 565      72697665 
+ 565      202A2A2A 
+ 566 008e 0000     		.space	2
+ 567              	.LC8:
+ 568 0090 00       		.ascii	"\000"
+ 569 0091 000000   		.space	3
+ 570              	.LC9:
+ 571 0094 665F6D6F 		.ascii	"f_mount()\000"
+ 571      756E7428 
+ 571      2900
+ 572 009e 0000     		.space	2
+ 573              	.LC10:
+ 574 00a0 0A2A2A2A 		.ascii	"\012*** Create NEWFILE.TXT ***\012\000"
+ 574      20437265 
+ 574      61746520 
+ 574      4E455746 
+ 574      494C452E 
+ 575 00bd 000000   		.space	3
+ 576              	.LC11:
+ 577 00c0 6E657766 		.ascii	"newfile.txt\000"
+ 577      696C652E 
+ 577      74787400 
+ 578              	.LC12:
+ 579 00cc 665F6F70 		.ascii	"f_open()\000"
+ 579      656E2829 
+ 579      00
+ 580 00d5 000000   		.space	3
+ 581              	.LC13:
+ 582 00d8 48656C6C 		.ascii	"Hello to world!\012\000"
+ 582      6F20746F 
+ 582      20776F72 
+ 582      6C64210A 
+ 582      00
+ 583 00e9 000000   		.space	3
+ 584              	.LC14:
+ 585 00ec 665F7772 		.ascii	"f_write()\000"
+ 585      69746528 
+ 585      2900
+ 586 00f6 0000     		.space	2
+ 587              	.LC15:
+ 588 00f8 665F636C 		.ascii	"f_close()\000"
+ 588      6F736528 
+ 588      2900
+ 589 0102 0000     		.space	2
+ 590              	.LC16:
+ 591 0104 0A2A2A2A 		.ascii	"\012*** Read NEWFILE.TXT ***\012\000"
+ 591      20526561 
+ 591      64204E45 
+ 591      5746494C 
+ 591      452E5458 
+ 592 011f 00       		.space	1
+ 593              	.LC17:
+ 594 0120 2D2D2D2D 		.ascii	"---- f_read() start ----\012\000"
+ 594      20665F72 
+ 594      65616428 
+ 594      29207374 
+ 594      61727420 
+ 595 013a 0000     		.space	2
+ 596              	.LC18:
+ 597 013c 256300   		.ascii	"%c\000"
+ 598 013f 00       		.space	1
+ 599              	.LC19:
+ 600 0140 0A2D2D2D 		.ascii	"\012----- f_read() end -----\012\000"
+ 600      2D2D2066 
+ 600      5F726561 
+ 600      64282920 
+ 600      656E6420 
+ 601 015b 00       		.space	1
+ 602              	.LC20:
+ 603 015c 446F6E65 		.ascii	"Done\000"
+ 603      00
+ 604              		.text
+ 605              	.Letext0:
+ 606              		.file 2 "c:\\users\\user\\desktop\\arm-dev\\arm-tools\\arm-none-eabi\\include\\machine\\_default_t
+ 607              		.file 3 "c:\\users\\user\\desktop\\arm-dev\\arm-tools\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 608              		.file 4 "../../include/lpc2300.h"
+ 609              		.file 5 "../../include/integer.h"
+ 610              		.file 6 "../../include/ff.h"
+ 611              		.file 7 "../../include/diskio.h"
+ 612              		.file 8 "../../include/xprintf.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+          obj/main.s:15     .text:00000000 $a
+          obj/main.s:21     .text:00000000 wait_msec
+          obj/main.s:72     .text:00000034 $d
+          obj/main.s:76     .text:00000038 $a
+          obj/main.s:82     .text:00000038 rc2msg
+          obj/main.s:110    .text:00000050 $d
+          obj/main.s:120    .text:00000064 $a
+          obj/main.s:195    .text:000000b4 $d
+          obj/main.s:204    .text:000000cc $a
+          obj/main.s:210    .text:000000cc main
+          obj/main.s:519    .text:000002d8 $d
+          obj/main.s:543    .rodata.str1.4:00000000 $d
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+xprintf
+LCD_Init
+LCD_Write
+LCD_Puts
+f_mount
+f_open
+f_write
+f_close
+f_read
+uart0_putc
+xfunc_out
+uart0_getc
+xfunc_in

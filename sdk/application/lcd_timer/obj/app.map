@@ -1,0 +1,561 @@
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD crt.o
+LOAD ./obj/test.o
+LOAD ../../lib/bios.def
+                0x000000b4                current_sp = 0xb4
+                0x00000dd8                usrcmd_execute = 0xdd8
+                0x00000df4                srload = 0xdf4
+                0x000011cc                exec_file = 0x11cc
+                0x00001304                _dbl2str = 0x1304
+                0x00001388                xstrlen = 0x1388
+                0x000013c8                xstrncpy_n = 0x13c8
+                0x00001428                xstrcmp = 0x1428
+                0x000014b4                ntlibc_strlen = 0x14b4
+                0x000014e4                ntlibc_strcpy = 0x14e4
+                0x00001518                ntlibc_strcat = 0x1518
+                0x00001564                ntlibc_strcmp = 0x1564
+                0x000015a8                ntlibc_strncmp = 0x15a8
+                0x00001620                ntlibc_isdigit = 0x1620
+                0x00001634                ntlibc_isalpha = 0x1634
+                0x0000165c                ntlibc_iscntrl = 0x165c
+                0x00001680                ntlibc_toupper = 0x1680
+                0x00001690                ntlibc_stricmp = 0x1690
+                0x000016f8                ntlibc_tolower = 0x16f8
+                0x00001708                ntlibc_atoi = 0x1708
+                0x00001800                ntlibc_strchr = 0x1800
+                0x0000183c                ntlibc_utoa = 0x183c
+                0x000018c4                ntopt_parse = 0x18c4
+                0x00002234                vtrecv_callback = 0x2234
+                0x00002350                ntshell_init = 0x2350
+                0x000023d0                ntshell_execute = 0x23d0
+                0x0000244c                ntshell_set_prompt = 0x244c
+                0x00002474                ntshell_version = 0x2474
+                0x0000248c                ntstdio_init = 0x248c
+                0x000024a4                ntstdio_putc = 0x24a4
+                0x00002510                ntstdio_puts = 0x2510
+                0x00002970                ntstdio_fputs = 0x2970
+                0x000029b0                ntstdio_printf = 0x29b0
+                0x000029dc                ntstdio_sprintf = 0x29dc
+                0x00002a20                ntstdio_fprintf = 0x2a20
+                0x00002a5c                ntstdio_gets = 0x2a5c
+                0x00002b58                ntstdio_fgets = 0x2b58
+                0x00002b84                text_editor_init = 0x2b84
+                0x00002b98                text_editor_insert = 0x2b98
+                0x00002c18                text_editor_backspace = 0x2c18
+                0x00002c84                text_editor_delete = 0x2c84
+                0x00002ce4                text_editor_cursor_get_position = 0x2ce4
+                0x00002cec                text_editor_cursor_head = 0x2cec
+                0x00002d08                text_editor_cursor_tail = 0x2d08
+                0x00002d24                text_editor_cursor_left = 0x2d24
+                0x00002d40                text_editor_cursor_right = 0x2d40
+                0x00002d60                text_editor_set_text = 0x2d60
+                0x00002da0                text_editor_get_text = 0x2da0
+                0x00002dd0                text_editor_clear = 0x2dd0
+                0x00002de4                text_history_init = 0x2de4
+                0x00002e10                text_history_write = 0x2e10
+                0x00002e6c                text_history_read = 0x2e6c
+                0x00002ea8                text_history_read_point_next = 0x2ea8
+                0x00002edc                text_history_read_point_prev = 0x2edc
+                0x00002f20                text_history_find = 0x2f20
+                0x0000311c                vtrecv_init = 0x311c
+                0x0000313c                vtrecv_execute = 0x313c
+                0x00003258                vtsend_init = 0x3258
+                0x00003268                vtsend_cursor_position = 0x3268
+                0x00003308                vtsend_cursor_up = 0x3308
+                0x0000337c                vtsend_cursor_down = 0x337c
+                0x000033f0                vtsend_cursor_forward = 0x33f0
+                0x00003464                vtsend_cursor_backward = 0x3464
+                0x000034d8                vtsend_cursor_position_save = 0x34d8
+                0x00003520                vtsend_cursor_position_restore = 0x3520
+                0x00003568                vtsend_erase_display = 0x3568
+                0x000035b8                vtsend_erase_line = 0x35b8
+                0x00003608                vtsend_set_color_foreground = 0x3608
+                0x00003680                vtsend_set_color_background = 0x3680
+                0x000036f8                vtsend_set_attribute = 0x36f8
+                0x0000376c                vtsend_set_scroll_region = 0x376c
+                0x0000380c                vtsend_set_cursor = 0x380c
+                0x00003874                vtsend_reset = 0x3874
+                0x000038b4                vtsend_draw_box = 0x38b4
+                0x000039d8                vtsend_fill_box = 0x39d8
+                0x00003a5c                LPC2388_Initialize = 0x3a5c
+                0x00005620                f_mount = 0x5620
+                0x000056ac                f_open = 0x56ac
+                0x000059f0                f_read = 0x59f0
+                0x00005c20                f_write = 0x5c20
+                0x00005fe8                f_sync = 0x5fe8
+                0x000060b8                f_close = 0x60b8
+                0x000060f8                f_chdir = 0x60f8
+                0x00006198                f_getcwd = 0x6198
+                0x000063b0                f_lseek = 0x63b0
+                0x00006704                f_opendir = 0x6704
+                0x000067d0                f_closedir = 0x67d0
+                0x000067fc                f_readdir = 0x67fc
+                0x00006878                f_findnext = 0x6878
+                0x000068ec                f_findfirst = 0x68ec
+                0x00006924                f_stat = 0x6924
+                0x00006998                f_getfree = 0x6998
+                0x00006b04                f_truncate = 0x6b04
+                0x00006c38                f_unlink = 0x6c38
+                0x00006d7c                f_mkdir = 0x6d7c
+                0x00006f64                f_rename = 0x6f64
+                0x0000712c                f_chmod = 0x712c
+                0x000071c4                f_utime = 0x71c4
+                0x00007268                f_getlabel = 0x7268
+                0x000073a4                f_setlabel = 0x73a4
+                0x000076a4                f_forward = 0x76a4
+                0x00007860                f_mkfs = 0x7860
+                0x00008204                f_gets = 0x8204
+                0x00008294                f_putc = 0x8294
+                0x000082cc                f_puts = 0x82cc
+                0x0000831c                f_printf = 0x831c
+                0x00008e5c                disk_status = 0x8e5c
+                0x00008e74                disk_initialize = 0x8e74
+                0x000090bc                disk_read = 0x90bc
+                0x00009174                disk_write = 0x9174
+                0x0000926c                disk_ioctl = 0x926c
+                0x000095c4                LCD_Write = 0x95c4
+                0x0000962c                LCD_Read = 0x962c
+                0x00009664                LCD_Init = 0x9664
+                0x00009760                LCD_PutChar = 0x9760
+                0x00009778                LCD_Puts = 0x9778
+                0x00009804                LCD_PutHex = 0x9804
+                0x00009860                LCD_wait_msec = 0x9860
+                0x000098a8                LCD_ShiftDisp = 0x98a8
+                0x00009900                LCD_ShiftCursor = 0x9900
+                0x00009958                __malloc2388_init = 0x9958
+                0x00009a50                malloc2388 = 0x9a50
+                0x00009adc                free2388 = 0x9adc
+                0x0000b638                _s_tiny_malloc_init_ = 0xb638
+                0x0000b718                _s_tiny_malloc_ = 0xb718
+                0x0000b900                _s_tiny_free_ = 0xb900
+                0x0000b9d0                uart0_init = 0xb9d0
+                0x0000b9d4                uart0_getc = 0xb9d4
+                0x0000b9f8                uart0_putc = 0xb9f8
+                0x0000ba18                uart0_puts = 0xba18
+                0x0000ba44                uart0_dataReady = 0xba44
+                0x0000ba58                VIC_Init = 0xba58
+                0x0000baa0                Enable_IRQ = 0xbaa0
+                0x0000bab8                Disable_IRQ = 0xbab8
+                0x0000bad0                Reg_IRQ = 0xbad0
+                0x0000bb1c                InitTimer0 = 0xbb1c
+                0x0000bb4c                _Demo_Timer0Handler = 0xbb4c
+                0x0000bbb0                xputc = 0xbbb0
+                0x0000bc1c                xputs = 0xbc1c
+                0x0000c050                xfputs = 0xc050
+                0x0000c094                xprintf = 0xc094
+                0x0000c0c0                xsprintf = 0xc0c0
+                0x0000c108                xfprintf = 0xc108
+                0x0000c148                put_dump = 0xc148
+                0x0000c238                xgets = 0xc238
+                0x0000c300                xfgets = 0xc300
+                0x0000c330                xatoi = 0xc330
+                0x0000c490                atan = 0xc490
+                0x0000c948                cbrt = 0xc948
+                0x0000cb80                ceil = 0xcb80
+                0x0000cd1c                cos = 0xcd1c
+                0x0000ce18                erf = 0xce18
+                0x0000d7e0                erfc = 0xd7e0
+                0x0000e1a8                fabs = 0xe1a8
+                0x0000e1b0                floor = 0xe1b0
+                0x0000e34c                modf = 0xe34c
+                0x0000e448                round = 0xe448
+                0x0000e548                sin = 0xe548
+                0x0000e648                tan = 0xe648
+                0x0000e6ec                tanh = 0xe6ec
+                0x0000e884                trunc = 0xe884
+                0x0000e938                acos = 0xe938
+                0x0000ea60                asin = 0xea60
+                0x0000eb88                atan2 = 0xeb88
+                0x0000eb98                cosh = 0xeb98
+                0x0000ece0                exp = 0xece0
+                0x0000ee68                fmod = 0xee68
+                0x0000efb8                hypot = 0xefb8
+                0x0000f0e0                log = 0xf0e0
+                0x0000f2a8                log10 = 0xf2a8
+                0x0000f470                pow = 0xf470
+                0x0000f994                sinh = 0xf994
+                0x0000fad0                sqrt = 0xfad0
+                0x0000fc08                __ieee754_acos = 0xfc08
+                0x00010268                __ieee754_asin = 0x10268
+                0x00010858                __ieee754_atan2 = 0x10858
+                0x00010ae8                __ieee754_cosh = 0x10ae8
+                0x00010d00                __ieee754_exp = 0x10d00
+                0x0001110c                __ieee754_fmod = 0x1110c
+                0x0001143c                __ieee754_hypot = 0x1143c
+                0x000117f0                __ieee754_log = 0x117f0
+                0x00011db0                __ieee754_log10 = 0x11db0
+                0x00011f60                __ieee754_pow = 0x11f60
+                0x00012ee8                __ieee754_rem_pio2 = 0x12ee8
+                0x00013550                __ieee754_sinh = 0x13550
+                0x000137ac                __ieee754_sqrt = 0x137ac
+                0x000139e0                __kernel_cos = 0x139e0
+                0x00013d30                __kernel_rem_pio2 = 0x13d30
+                0x000149e8                __kernel_sin = 0x149e8
+                0x00014bf8                __kernel_tan = 0x14bf8
+                0x00015138                expm1 = 0x15138
+                0x000157c8                finite = 0x157c8
+                0x000157d8                matherr = 0x157d8
+                0x000157e0                nan = 0x157e0
+                0x000157f0                rint = 0x157f0
+                0x00015990                scalbn = 0x15990
+                0x00015b08                copysign = 0x15b08
+                0x00015b18                atof = 0x15b18
+                0x00015b2c                atoi = 0x15b2c
+                0x00015b44                _atoi_r = 0x15b44
+                0x00015b5c                atol = 0x15b5c
+                0x00015b74                _atol_r = 0x15b74
+                0x00015b8c                bsearch = 0x15b8c
+                0x00015c08                __errno = 0x15c08
+                0x00015c18                _setlocale_r = 0x15c18
+                0x00015c80                __locale_mb_cur_max = 0x15c80
+                0x00015ca8                __locale_ctype_ptr_l = 0x15ca8
+                0x00015cb0                __locale_ctype_ptr = 0x15cb0
+                0x00015cd8                setlocale = 0x15cd8
+                0x00015cf0                malloc = 0x15cf0
+                0x00015d10                free = 0x15d10
+                0x00015d30                _malloc_r = 0x15d30
+                0x000164bc                _mbtowc_r = 0x164bc
+                0x000164f0                __ascii_mbtowc = 0x164f0
+                0x0001653c                memchr = 0x1653c
+                0x0001664c                memcmp = 0x1664c
+                0x0001673c                memcpy = 0x1673c
+                0x00016850                memmove = 0x16850
+                0x00016998                memset = 0x16998
+                0x00016aac                __malloc_lock = 0x16aac
+                0x00016ac4                __malloc_unlock = 0x16ac4
+                0x00016adc                qsort = 0x16adc
+                0x0001738c                srand = 0x1738c
+                0x000173a8                rand = 0x173a8
+                0x000173fc                _sbrk_r = 0x173fc
+                0x00017440                _sprintf_r = 0x17440
+                0x000174a4                sprintf = 0x174a4
+                0x00017518                strcat = 0x17518
+                0x0001758c                strchr = 0x1758c
+                0x00017738                strcmp = 0x17738
+                0x0001795c                strcpy = 0x1795c
+                0x00017a4c                strcspn = 0x17a4c
+                0x00017ab0                strncat = 0x17ab0
+                0x00017b50                strncpy = 0x17b50
+                0x00017c2c                strrchr = 0x17c2c
+                0x00017c80                strspn = 0x17c80
+                0x000181ac                strstr = 0x181ac
+                0x00018590                _strtod_l = 0x18590
+                0x00019bf0                _strtod_r = 0x19bf0
+                0x00019c14                strtod_l = 0x19c14
+                0x00019c30                strtod = 0x19c30
+                0x00019c68                strtof_l = 0x19c68
+                0x00019d4c                strtof = 0x19d4c
+                0x00019e44                strtok = 0x19e44
+                0x00019e68                __strtok_r = 0x19e68
+                0x00019f1c                strtok_r = 0x19f1c
+                0x0001a144                _strtol_r = 0x1a144
+                0x0001a180                strtol_l = 0x1a180
+                0x0001a1b8                strtol = 0x1a1b8
+                0x0001a3ec                _strtoul_r = 0x1a3ec
+                0x0001a428                strtoul_l = 0x1a428
+                0x0001a460                strtoul = 0x1a460
+                0x0001a4ac                _svfprintf_r = 0x1a4ac
+                0x0001c4e0                _vsprintf_r = 0x1c4e0
+                0x0001c530                vsprintf = 0x1c530
+                0x0001c54c                _wctomb_r = 0x1c54c
+                0x0001c580                __ascii_wctomb = 0x1c580
+                0x0001c788                _dtoa_r = 0x1c788
+                0x0001ddc4                _malloc_trim_r = 0x1ddc4
+                0x0001dec4                _free_r = 0x1dec4
+                0x0001e29c                __gethex = 0x1e29c
+                0x0001eaa0                __match = 0x1eaa0
+                0x0001eb0c                __hexnan = 0x1eb0c
+                0x0001ed7c                __localeconv_l = 0x1ed7c
+                0x0001ed84                _localeconv_r = 0x1ed84
+                0x0001edac                localeconv = 0x1edac
+                0x0001edd4                __retarget_lock_init = 0x1edd4
+                0x0001edd8                __retarget_lock_init_recursive = 0x1edd8
+                0x0001eddc                __retarget_lock_close = 0x1eddc
+                0x0001ede0                __retarget_lock_close_recursive = 0x1ede0
+                0x0001ede4                __retarget_lock_acquire = 0x1ede4
+                0x0001ede8                __retarget_lock_acquire_recursive = 0x1ede8
+                0x0001edec                __retarget_lock_try_acquire = 0x1edec
+                0x0001edf4                __retarget_lock_try_acquire_recursive = 0x1edf4
+                0x0001edfc                __retarget_lock_release = 0x1edfc
+                0x0001ee00                __retarget_lock_release_recursive = 0x1ee00
+                0x0001ee04                _Balloc = 0x1ee04
+                0x0001ee90                _Bfree = 0x1ee90
+                0x0001eeac                __multadd = 0x1eeac
+                0x0001ef88                __s2b = 0x1ef88
+                0x0001f078                __hi0bits = 0x1f078
+                0x0001f0d0                __lo0bits = 0x1f0d0
+                0x0001f170                __i2b = 0x1f170
+                0x0001f194                __multiply = 0x1f194
+                0x0001f364                __pow5mult = 0x1f364
+                0x0001f468                __lshift = 0x1f468
+                0x0001f550                __mcmp = 0x1f550
+                0x0001f5b0                __mdiff = 0x1f5b0
+                0x0001f758                __ulp = 0x1f758
+                0x0001f7c0                __b2d = 0x1f7c0
+                0x0001f8ac                __d2b = 0x1f8ac
+                0x0001f9bc                __ratio = 0x1f9bc
+                0x0001fa4c                _mprec_log10 = 0x1fa4c
+                0x0001faa8                __copybits = 0x1faa8
+                0x0001fb18                __any_on = 0x1fb18
+                0x0001fb98                cleanup_glue = 0x1fb98
+                0x0001fbc4                _reclaim_reent = 0x1fbc4
+                0x0001fcb8                nanf = 0x1fcb8
+                0x0001fcc4                strlen = 0x1fcc4
+                0x0001fd24                strncmp = 0x1fd24
+                0x0001fe34                __ssprint_r = 0x1fe34
+                0x0001ffc4                _svfiprintf_r = 0x1ffc4
+                0x00021018                _calloc_r = 0x21018
+                0x000210b0                _realloc_r = 0x210b0
+                0x00021584                _sbrk = 0x21584
+                0x000215b0                __aeabi_uidiv = 0x215b0
+                0x000215b0                __udivsi3 = 0x215b0
+                0x000216a4                __aeabi_uidivmod = 0x216a4
+                0x000216c4                __divsi3 = 0x216c4
+                0x000216c4                __aeabi_idiv = 0x216c4
+                0x000217ec                __aeabi_idivmod = 0x217ec
+                0x0002180c                __aeabi_idiv0 = 0x2180c
+                0x0002180c                __aeabi_ldiv0 = 0x2180c
+                0x00021810                __aeabi_drsub = 0x21810
+                0x00021818                __aeabi_dsub = 0x21818
+                0x00021818                __subdf3 = 0x21818
+                0x0002181c                __aeabi_dadd = 0x2181c
+                0x0002181c                __adddf3 = 0x2181c
+                0x00021b2c                __floatunsidf = 0x21b2c
+                0x00021b2c                __aeabi_ui2d = 0x21b2c
+                0x00021b50                __floatsidf = 0x21b50
+                0x00021b50                __aeabi_i2d = 0x21b50
+                0x00021b78                __aeabi_f2d = 0x21b78
+                0x00021b78                __extendsfdf2 = 0x21b78
+                0x00021bb8                __floatundidf = 0x21bb8
+                0x00021bb8                __aeabi_ul2d = 0x21bb8
+                0x00021bcc                __floatdidf = 0x21bcc
+                0x00021bcc                __aeabi_l2d = 0x21bcc
+                0x00021c2c                __aeabi_dmul = 0x21c2c
+                0x00021c2c                __muldf3 = 0x21c2c
+                0x00021ebc                __divdf3 = 0x21ebc
+                0x00021ebc                __aeabi_ddiv = 0x21ebc
+                0x000220c8                __gtdf2 = 0x220c8
+                0x000220c8                __gedf2 = 0x220c8
+                0x000220d0                __ltdf2 = 0x220d0
+                0x000220d0                __ledf2 = 0x220d0
+                0x000220d8                __nedf2 = 0x220d8
+                0x000220d8                __eqdf2 = 0x220d8
+                0x000220d8                __cmpdf2 = 0x220d8
+                0x00022160                __aeabi_cdrcmple = 0x22160
+                0x0002217c                __aeabi_cdcmpeq = 0x2217c
+                0x0002217c                __aeabi_cdcmple = 0x2217c
+                0x00022194                __aeabi_dcmpeq = 0x22194
+                0x000221ac                __aeabi_dcmplt = 0x221ac
+                0x000221c4                __aeabi_dcmple = 0x221c4
+                0x000221dc                __aeabi_dcmpge = 0x221dc
+                0x000221f4                __aeabi_dcmpgt = 0x221f4
+                0x0002220c                __unorddf2 = 0x2220c
+                0x0002220c                __aeabi_dcmpun = 0x2220c
+                0x00022244                __aeabi_d2iz = 0x22244
+                0x00022244                __fixdfsi = 0x22244
+                0x000222a0                __aeabi_d2uiz = 0x222a0
+                0x000222a0                __fixunsdfsi = 0x222a0
+                0x000222f4                __truncdfsf2 = 0x222f4
+                0x000222f4                __aeabi_d2f = 0x222f4
+                0x00022394                __aeabi_frsub = 0x22394
+                0x0002239c                __subsf3 = 0x2239c
+                0x0002239c                __aeabi_fsub = 0x2239c
+                0x000223a0                __aeabi_fadd = 0x223a0
+                0x000223a0                __addsf3 = 0x223a0
+                0x0002255c                __aeabi_ui2f = 0x2255c
+                0x0002255c                __floatunsisf = 0x2255c
+                0x00022564                __aeabi_i2f = 0x22564
+                0x00022564                __floatsisf = 0x22564
+                0x00022584                __aeabi_ul2f = 0x22584
+                0x00022584                __floatundisf = 0x22584
+                0x00022594                __aeabi_l2f = 0x22594
+                0x00022594                __floatdisf = 0x22594
+                0x00022640                __mulsf3 = 0x22640
+                0x00022640                __aeabi_fmul = 0x22640
+                0x000227d8                __aeabi_fdiv = 0x227d8
+                0x000227d8                __divsf3 = 0x227d8
+                0x00022938                __gesf2 = 0x22938
+                0x00022938                __gtsf2 = 0x22938
+                0x00022940                __lesf2 = 0x22940
+                0x00022940                __ltsf2 = 0x22940
+                0x00022948                __nesf2 = 0x22948
+                0x00022948                __eqsf2 = 0x22948
+                0x00022948                __cmpsf2 = 0x22948
+                0x000229ac                __aeabi_cfrcmple = 0x229ac
+                0x000229bc                __aeabi_cfcmpeq = 0x229bc
+                0x000229bc                __aeabi_cfcmple = 0x229bc
+                0x000229d4                __aeabi_fcmpeq = 0x229d4
+                0x000229ec                __aeabi_fcmplt = 0x229ec
+                0x00022a04                __aeabi_fcmple = 0x22a04
+                0x00022a1c                __aeabi_fcmpge = 0x22a1c
+                0x00022a34                __aeabi_fcmpgt = 0x22a34
+                0x00022a4c                __unordsf2 = 0x22a4c
+                0x00022a4c                __aeabi_fcmpun = 0x22a4c
+                0x00022a84                __aeabi_f2iz = 0x22a84
+                0x00022a84                __fixsfsi = 0x22a84
+                0x00022ae0                __fixunssfsi = 0x22ae0
+                0x00022ae0                __aeabi_f2uiz = 0x22ae0
+                0x00022b34                __aeabi_ldivmod = 0x22b34
+                0x00022c08                __aeabi_uldivmod = 0x22c08
+                0x00022c44                __fixsfdi = 0x22c44
+                0x00022c44                __aeabi_f2lz = 0x22c44
+                0x00022c84                __fixdfdi = 0x22c84
+                0x00022c84                __aeabi_d2lz = 0x22c84
+                0x00022cd0                __fixunssfdi = 0x22cd0
+                0x00022cd0                __aeabi_f2ulz = 0x22cd0
+                0x00022d40                __fixunsdfdi = 0x22d40
+                0x00022d40                __aeabi_d2ulz = 0x22d40
+                0x00022dac                __udivmoddi4 = 0x22dac
+                0x00022ed8                __clzdi2 = 0x22ed8
+                0x00022f00                __clzsi2 = 0x22f00
+                0x00024490                _global_impure_ptr = 0x24490
+                0x00024568                _ctype_ = 0x24568
+                0x0002467c                __hexdig = 0x2467c
+                0x00024780                __mprec_bigtens = 0x24780
+                0x000247a8                __mprec_tens = 0x247a8
+                0x00024870                __mprec_tinytens = 0x24870
+                0x40000009                __fdlib_version = 0x40000009
+                0x4000000c                _impure_ptr = 0x4000000c
+                0x40000438                __global_locale = 0x40000438
+                0x400005a4                __malloc_av_ = 0x400005a4
+                0x400009ac                __malloc_sbrk_base = 0x400009ac
+                0x400009b0                __malloc_trim_threshold = 0x400009b0
+                0x40000c54                _PathLocale = 0x40000c54
+                0x40000c58                __malloc_current_mallinfo = 0x40000c58
+                0x40000c80                __malloc_max_sbrked_mem = 0x40000c80
+                0x40000c84                __malloc_max_total_mem = 0x40000c84
+                0x40000c88                __malloc_top_pad = 0x40000c88
+                0x40000c90                _tiny_malloc_flag = 0x40000c90
+                0x40000c94                _tn_malloc_info = 0x40000c94
+                0x40000cd0                xfunc_in = 0x40000cd0
+                0x40000cd4                xfunc_out = 0x40000cd4
+                0x40000cd8                __lock___atexit_recursive_mutex = 0x40000cd8
+                0x40000cdc                __lock___arc4random_mutex = 0x40000cdc
+                0x40000ce0                __lock___env_recursive_mutex = 0x40000ce0
+                0x40000ce4                __lock___sinit_recursive_mutex = 0x40000ce4
+                0x40000ce8                __lock___malloc_recursive_mutex = 0x40000ce8
+                0x40000cec                __lock___at_quick_exit_mutex = 0x40000cec
+                0x40000cf0                __lock___dd_hash_mutex = 0x40000cf0
+                0x40000cf4                __lock___tz_mutex = 0x40000cf4
+                0x40000cf8                __lock___sfp_recursive_mutex = 0x40000cf8
+                0x40000cfc                errno = 0x40000cfc
+                0x4000fe00                _heap_end_ = 0x4000fe00
+                0x4000fff8                _sp_base = 0x4000fff8
+
+.start          0x40002000       0x50
+                0x40002000                _stext = .
+ crt.o(.text)
+ .text          0x40002000       0x50 crt.o
+                0x40002010                sys_exit
+
+.text           0x40002050      0x188
+ *(.text .text.*)
+ .text          0x40002050      0x160 ./obj/test.o
+                0x40002050                wait_msec
+                0x40002088                main
+ .text.__stub   0x400021b0       0x28 linker stubs
+                0x400021d8                . = ALIGN (0x4)
+                0x400021d8                _etext = .
+
+.glue_7         0x400021d8        0x0
+ .glue_7        0x400021d8        0x0 linker stubs
+
+.glue_7t        0x400021d8        0x0
+ .glue_7t       0x400021d8        0x0 linker stubs
+
+.vfp11_veneer   0x400021d8        0x0
+ .vfp11_veneer  0x400021d8        0x0 linker stubs
+
+.v4_bx          0x400021d8        0x0
+ .v4_bx         0x400021d8        0x0 linker stubs
+
+.iplt           0x400021d8        0x0
+ .iplt          0x400021d8        0x0 crt.o
+
+.rdata          0x400021d8       0x1c
+                0x400021d8                _srdata = .
+ *(.rodata)
+ *(.rodata.*)
+ .rodata.str1.4
+                0x400021d8       0x1c ./obj/test.o
+                                 0x1a (size before relaxing)
+                0x400021f4                _erdata = .
+
+.rel.dyn        0x400021f4        0x0
+ .rel.iplt      0x400021f4        0x0 crt.o
+
+.data           0x400021f4        0x0
+                0x400021f4                _sdata = .
+ *(.data)
+ .data          0x400021f4        0x0 crt.o
+ .data          0x400021f4        0x0 ./obj/test.o
+ *(.zdata)
+                0x400021f4                _edata = .
+
+.igot.plt       0x400021f4        0x0
+ .igot.plt      0x400021f4        0x0 crt.o
+
+.bss            0x400021f4        0x0
+                0x400021f4                _sbss = .
+ *(.bss)
+ .bss           0x400021f4        0x0 crt.o
+ .bss           0x400021f4        0x0 ./obj/test.o
+ *(.bss.*)
+ *(.gnu.linkonce.b*)
+ *(COMMON)
+                0x400021f4                _ebss = .
+
+.heap           0x400021f8       0x7f
+                0x400021f8                _end = .
+                [!provide]                PROVIDE (_end, .)
+                [!provide]                PROVIDE (end, .)
+                [!provide]                PROVIDE (_heap, .)
+                0x400021f8                _heap_start_ = .
+ *(.heap)
+ *(.heap*)
+ *(.HEAP)
+ *(.comment)
+ .comment       0x400021f8       0x7f ./obj/test.o
+                                 0x80 (size before relaxing)
+OUTPUT(obj/app.elf elf32-littlearm)
+
+.ARM.attributes
+                0x00000000       0x2e
+ .ARM.attributes
+                0x00000000       0x22 crt.o
+ .ARM.attributes
+                0x00000022       0x32 ./obj/test.o
+
+.debug_info     0x00000000      0x127
+ .debug_info    0x00000000      0x127 ./obj/test.o
+
+.debug_abbrev   0x00000000       0xc7
+ .debug_abbrev  0x00000000       0xc7 ./obj/test.o
+
+.debug_loc      0x00000000       0x7b
+ .debug_loc     0x00000000       0x7b ./obj/test.o
+
+.debug_aranges  0x00000000       0x20
+ .debug_aranges
+                0x00000000       0x20 ./obj/test.o
+
+.debug_macinfo  0x00000000     0xec65
+ .debug_macinfo
+                0x00000000     0xec65 ./obj/test.o
+
+.debug_line     0x00000000      0x210
+ .debug_line    0x00000000      0x210 ./obj/test.o
+
+.debug_str      0x00000000      0x159
+ .debug_str     0x00000000      0x159 ./obj/test.o
+                                0x19b (size before relaxing)
+
+.debug_frame    0x00000000       0x58
+ .debug_frame   0x00000000       0x58 ./obj/test.o

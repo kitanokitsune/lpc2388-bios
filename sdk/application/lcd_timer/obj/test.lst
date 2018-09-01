@@ -1,0 +1,384 @@
+   1              		.cpu arm7tdmi-s
+   2              		.eabi_attribute 20, 1	@ Tag_ABI_FP_denormal
+   3              		.eabi_attribute 21, 1	@ Tag_ABI_FP_exceptions
+   4              		.eabi_attribute 23, 3	@ Tag_ABI_FP_number_model
+   5              		.eabi_attribute 24, 1	@ Tag_ABI_align8_needed
+   6              		.eabi_attribute 25, 1	@ Tag_ABI_align8_preserved
+   7              		.eabi_attribute 26, 1	@ Tag_ABI_enum_size
+   8              		.eabi_attribute 30, 1	@ Tag_ABI_optimization_goals
+   9              		.eabi_attribute 34, 0	@ Tag_CPU_unaligned_access
+  10              		.eabi_attribute 18, 4	@ Tag_ABI_PCS_wchar_t
+  11              		.file	"test.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.align	2
+  16              		.global	wait_msec
+  17              		.syntax unified
+  18              		.arm
+  19              		.fpu softvfp
+  21              	wait_msec:
+  22              	.LFB0:
+  23              		.file 1 "test.c"
+  24              		@ test.c:19
+   1:test.c        **** /*
+   2:test.c        ****  FLASH ROM 内のモニタプログラム lpc2388_monitor を OS として利用する実験。
+   3:test.c        ****  このアプリは、FLASH ROM 内にある機能（シリアル通信等）を BIOS として利�
+   4:test.c        ****  モニタから RAM にロードして実行するアプリケーション。
+   5:test.c        **** 
+   6:test.c        ****  使い方：
+   7:test.c        ****     電源投入でモニタプログラムが起動したら、
+   8:test.c        ****     lコマンドでmotファイルをロードして g40008000 で実行する。
+   9:test.c        ****     すると、シリアルコンソールとLCDディスプレイにカウントダウンが
+  10:test.c        ****     表示され、10秒後にモニタプログラムに制御が戻ってくる。
+  11:test.c        **** */
+  12:test.c        **** 
+  13:test.c        **** #include "lpc2300.h"
+  14:test.c        **** #include "lcd1602.h"
+  15:test.c        **** #include "xprintf.h"
+  16:test.c        **** 
+  17:test.c        **** /* タイマーを使った msec 単位の wait */
+  18:test.c        **** void wait_msec(unsigned int msec)
+  19:test.c        **** {
+  25              		.loc 1 19 0
+  26              		.cfi_startproc
+  27              		@ Function supports interworking.
+  28              		@ args = 0, pretend = 0, frame = 0
+  29              		@ frame_needed = 0, uses_anonymous_args = 0
+  30              		@ link register save eliminated.
+  31              	.LVL0:
+  32              	@ BLOCK 2 freq:900 seq:0
+  33              	@ PRED: ENTRY [100.0%]  (FALLTHRU)
+  34              		@ test.c:21
+  20:test.c        ****     unsigned int usec;
+  21:test.c        ****     usec = msec * 1000;
+  35              		.loc 1 21 0
+  36 0000 803260E0 		rsb	r3, r0, r0, lsl #5
+  37 0004 030180E0 		add	r0, r0, r3, lsl #2
+  38              	.LVL1:
+  39 0008 8001A0E1 		lsl	r0, r0, #3
+  40              	.LVL2:
+  41              		@ test.c:23
+  22:test.c        **** 
+  23:test.c        ****     T0TCR = 0x02; //Reset Timer
+  42              		.loc 1 23 0
+  43 000c 20309FE5 		ldr	r3, .L4
+  44 0010 0220A0E3 		mov	r2, #2
+  45 0014 042083E5 		str	r2, [r3, #4]
+  46              		@ test.c:24
+  24:test.c        ****     T0TCR = 0x01; //Enable timer
+  47              		.loc 1 24 0
+  48 0018 0120A0E3 		mov	r2, #1
+  49 001c 042083E5 		str	r2, [r3, #4]
+  50              	@ SUCC: 3 [100.0%]  (FALLTHRU,CAN_FALLTHRU)
+  51              		@ test.c:25
+  25:test.c        ****     while(T0TC < usec);
+  52              		.loc 1 25 0
+  53 0020 0320A0E1 		mov	r2, r3
+  54              	@ BLOCK 3 freq:10000 seq:1
+  55              	@ PRED: 2 [100.0%]  (FALLTHRU,CAN_FALLTHRU) 3 [91.0%]  (DFS_BACK,CAN_FALLTHRU)
+  56              	.L2:
+  57              		@ test.c:25
+  58              		.loc 1 25 0 is_stmt 0
+  59 0024 083092E5 		ldr	r3, [r2, #8]
+  60 0028 030050E1 		cmp	r0, r3
+  61              	@ SUCC: 3 [91.0%]  (DFS_BACK,CAN_FALLTHRU) 4 [9.0%]  (FALLTHRU,CAN_FALLTHRU,LOOP_EXIT)
+  62 002c FCFFFF8A 		bhi	.L2
+  63              	@ BLOCK 4 freq:900 seq:2
+  64              	@ PRED: 3 [9.0%]  (FALLTHRU,CAN_FALLTHRU,LOOP_EXIT)
+  65              	@ SUCC: EXIT [100.0%] 
+  66              		@ test.c:27
+  26:test.c        **** //    T0TCR = 0x00; //Disable timer
+  27:test.c        **** }
+  67              		.loc 1 27 0 is_stmt 1
+  68 0030 1EFF2FE1 		bx	lr
+  69              	.L5:
+  70              		.align	2
+  71              	.L4:
+  72 0034 004000E0 		.word	-536854528
+  73              		.cfi_endproc
+  74              	.LFE0:
+  76              		.align	2
+  77              		.global	main
+  78              		.syntax unified
+  79              		.arm
+  80              		.fpu softvfp
+  82              	main:
+  83              	.LFB1:
+  84              		@ test.c:31
+  28:test.c        **** 
+  29:test.c        **** 
+  30:test.c        **** /* メイン関数。この実行が終わるとモニタプログラムに制御を返す */
+  31:test.c        **** int main(void){
+  85              		.loc 1 31 0
+  86              		.cfi_startproc
+  87              		@ Function supports interworking.
+  88              		@ args = 0, pretend = 0, frame = 0
+  89              		@ frame_needed = 0, uses_anonymous_args = 0
+  90              	@ BLOCK 2 freq:909 seq:0
+  91              	@ PRED: ENTRY [100.0%]  (FALLTHRU)
+  92 0038 F84F2DE9 		push	{r3, r4, r5, r6, r7, r8, r9, r10, fp, lr}
+  93              	.LCFI0:
+  94              		.cfi_def_cfa_offset 40
+  95              		.cfi_offset 3, -40
+  96              		.cfi_offset 4, -36
+  97              		.cfi_offset 5, -32
+  98              		.cfi_offset 6, -28
+  99              		.cfi_offset 7, -24
+ 100              		.cfi_offset 8, -20
+ 101              		.cfi_offset 9, -16
+ 102              		.cfi_offset 10, -12
+ 103              		.cfi_offset 11, -8
+ 104              		.cfi_offset 14, -4
+ 105              	.LVL3:
+ 106              		@ test.c:35
+  32:test.c        ****     int i,j;
+  33:test.c        **** 
+  34:test.c        ****     j = 0;
+  35:test.c        ****     LCD_Init();
+ 107              		.loc 1 35 0
+ 108 003c FEFFFFEB 		bl	LCD_Init
+ 109              	.LVL4:
+ 110              		@ test.c:36
+  36:test.c        ****     LCD_Clear();
+ 111              		.loc 1 36 0
+ 112 0040 0110A0E3 		mov	r1, #1
+ 113 0044 0000A0E3 		mov	r0, #0
+ 114 0048 FEFFFFEB 		bl	LCD_Write
+ 115              	.LVL5:
+ 116              		@ test.c:37
+  37:test.c        **** 	LCD_SetCursorPos(0,0);
+ 117              		.loc 1 37 0
+ 118 004c 8010A0E3 		mov	r1, #128
+ 119 0050 0000A0E3 		mov	r0, #0
+ 120 0054 FEFFFFEB 		bl	LCD_Write
+ 121              	.LVL6:
+ 122              		@ test.c:38
+  38:test.c        ****     LCD_Puts("Wait:", 5);
+ 123              		.loc 1 38 0
+ 124 0058 0510A0E3 		mov	r1, #5
+ 125 005c E0009FE5 		ldr	r0, .L10
+ 126 0060 FEFFFFEB 		bl	LCD_Puts
+ 127              	.LVL7:
+ 128              		@ test.c:39
+  39:test.c        ****     xprintf("\nOK");
+ 129              		.loc 1 39 0
+ 130 0064 DC009FE5 		ldr	r0, .L10+4
+ 131 0068 FEFFFFEB 		bl	xprintf
+ 132              	.LVL8:
+ 133              		@ test.c:34
+  34:test.c        ****     LCD_Init();
+ 134              		.loc 1 34 0
+ 135 006c 0050A0E3 		mov	r5, #0
+ 136              		@ test.c:40
+  40:test.c        ****     for (i=9;i>=0;i--) {
+ 137              		.loc 1 40 0
+ 138 0070 0940A0E3 		mov	r4, #9
+ 139              		@ test.c:41
+  41:test.c        ****         LCD_DisplayOff();
+ 140              		.loc 1 41 0
+ 141 0074 08B0A0E3 		mov	fp, #8
+ 142 0078 0570A0E1 		mov	r7, r5
+ 143              		@ test.c:42
+  42:test.c        ****         FIO1PIN &= ~0x00040000;  /* P1[18] '0' -> LED ON */
+ 144              		.loc 1 42 0
+ 145 007c C8609FE5 		ldr	r6, .L10+8
+ 146              		@ test.c:43
+  43:test.c        ****         xprintf(" %d",j);
+ 147              		.loc 1 43 0
+ 148 0080 C8909FE5 		ldr	r9, .L10+12
+ 149              		@ test.c:45
+  44:test.c        ****         j++;
+  45:test.c        ****         wait_msec(500);
+ 150              		.loc 1 45 0
+ 151 0084 7D8FA0E3 		mov	r8, #500
+ 152              	@ SUCC: 3 [100.0%]  (FALLTHRU,CAN_FALLTHRU)
+ 153              		@ test.c:46
+  46:test.c        ****         LCD_DisplayOn();
+ 154              		.loc 1 46 0
+ 155 0088 0CA0A0E3 		mov	r10, #12
+ 156              	.LVL9:
+ 157              	@ BLOCK 3 freq:9091 seq:1
+ 158              	@ PRED: 3 [90.9%]  (DFS_BACK,CAN_FALLTHRU) 2 [100.0%]  (FALLTHRU,CAN_FALLTHRU)
+ 159              	.L7:
+ 160              		@ test.c:41
+  41:test.c        ****         FIO1PIN &= ~0x00040000;  /* P1[18] '0' -> LED ON */
+ 161              		.loc 1 41 0
+ 162 008c 0B10A0E1 		mov	r1, fp
+ 163 0090 0700A0E1 		mov	r0, r7
+ 164 0094 FEFFFFEB 		bl	LCD_Write
+ 165              	.LVL10:
+ 166              		@ test.c:42
+  42:test.c        ****         xprintf(" %d",j);
+ 167              		.loc 1 42 0
+ 168 0098 CB3F16E5 		ldr	r3, [r6, #-4043]
+ 169 009c 0137C3E3 		bic	r3, r3, #262144
+ 170 00a0 CB3F06E5 		str	r3, [r6, #-4043]
+ 171              		@ test.c:43
+  43:test.c        ****         j++;
+ 172              		.loc 1 43 0
+ 173 00a4 0510A0E1 		mov	r1, r5
+ 174 00a8 0900A0E1 		mov	r0, r9
+ 175 00ac FEFFFFEB 		bl	xprintf
+ 176              	.LVL11:
+ 177              		@ test.c:45
+  45:test.c        ****         LCD_DisplayOn();
+ 178              		.loc 1 45 0
+ 179 00b0 0800A0E1 		mov	r0, r8
+ 180 00b4 FEFFFFEB 		bl	wait_msec
+ 181              	.LVL12:
+ 182              		@ test.c:46
+ 183              		.loc 1 46 0
+ 184 00b8 0A10A0E1 		mov	r1, r10
+ 185 00bc 0700A0E1 		mov	r0, r7
+ 186 00c0 FEFFFFEB 		bl	LCD_Write
+ 187              	.LVL13:
+ 188              		@ test.c:47
+  47:test.c        **** 		LCD_SetCursorPos(6,0);
+ 189              		.loc 1 47 0
+ 190 00c4 8610A0E3 		mov	r1, #134
+ 191 00c8 0700A0E1 		mov	r0, r7
+ 192 00cc FEFFFFEB 		bl	LCD_Write
+ 193              	.LVL14:
+ 194              		@ test.c:48
+  48:test.c        ****     	LCD_PutHex(i, 1);
+ 195              		.loc 1 48 0
+ 196 00d0 0110A0E3 		mov	r1, #1
+ 197 00d4 0400A0E1 		mov	r0, r4
+ 198 00d8 FEFFFFEB 		bl	LCD_PutHex
+ 199              	.LVL15:
+ 200              		@ test.c:49
+  49:test.c        ****         FIO1PIN = 0x00040000;	 /* P1[18] '1' -> LED OFF */
+ 201              		.loc 1 49 0
+ 202 00dc 0137A0E3 		mov	r3, #262144
+ 203 00e0 CB3F06E5 		str	r3, [r6, #-4043]
+ 204              		@ test.c:50
+  50:test.c        ****         xprintf(" %d",j);
+ 205              		.loc 1 50 0
+ 206 00e4 011085E2 		add	r1, r5, #1
+ 207              	.LVL16:
+ 208 00e8 0900A0E1 		mov	r0, r9
+ 209 00ec FEFFFFEB 		bl	xprintf
+ 210              	.LVL17:
+ 211              		@ test.c:51
+  51:test.c        ****         j++;
+ 212              		.loc 1 51 0
+ 213 00f0 025085E2 		add	r5, r5, #2
+ 214              	.LVL18:
+ 215              		@ test.c:52
+  52:test.c        ****         wait_msec(500);
+ 216              		.loc 1 52 0
+ 217 00f4 0800A0E1 		mov	r0, r8
+ 218 00f8 FEFFFFEB 		bl	wait_msec
+ 219              	.LVL19:
+ 220              		@ test.c:40
+  40:test.c        ****         LCD_DisplayOff();
+ 221              		.loc 1 40 0
+ 222 00fc 014044E2 		sub	r4, r4, #1
+ 223              	.LVL20:
+ 224 0100 010074E3 		cmn	r4, #1
+ 225              	@ SUCC: 3 [90.9%]  (DFS_BACK,CAN_FALLTHRU) 4 [9.1%]  (FALLTHRU,CAN_FALLTHRU,LOOP_EXIT)
+ 226 0104 E0FFFF1A 		bne	.L7
+ 227              	@ BLOCK 4 freq:909 seq:2
+ 228              	@ PRED: 3 [9.1%]  (FALLTHRU,CAN_FALLTHRU,LOOP_EXIT)
+ 229              		@ test.c:54
+  53:test.c        ****     }
+  54:test.c        ****     LCD_Clear();
+ 230              		.loc 1 54 0
+ 231 0108 0110A0E3 		mov	r1, #1
+ 232 010c 0000A0E3 		mov	r0, #0
+ 233 0110 FEFFFFEB 		bl	LCD_Write
+ 234              	.LVL21:
+ 235              		@ test.c:55
+  55:test.c        ****     LCD_Puts("Hello!",6);
+ 236              		.loc 1 55 0
+ 237 0114 0610A0E3 		mov	r1, #6
+ 238 0118 34009FE5 		ldr	r0, .L10+16
+ 239 011c FEFFFFEB 		bl	LCD_Puts
+ 240              	.LVL22:
+ 241              		@ test.c:56
+  56:test.c        ****     FIO1PIN &= ~0x00040000;  /* P1[18] '0' -> LED ON */
+ 242              		.loc 1 56 0
+ 243 0120 24209FE5 		ldr	r2, .L10+8
+ 244 0124 CB3F12E5 		ldr	r3, [r2, #-4043]
+ 245 0128 0137C3E3 		bic	r3, r3, #262144
+ 246 012c CB3F02E5 		str	r3, [r2, #-4043]
+ 247              		@ test.c:57
+  57:test.c        ****     xprintf("\n");
+ 248              		.loc 1 57 0
+ 249 0130 20009FE5 		ldr	r0, .L10+20
+ 250 0134 FEFFFFEB 		bl	xprintf
+ 251              	.LVL23:
+ 252              		@ test.c:61
+  58:test.c        **** 
+  59:test.c        ****   return 0x123; /* ここで返した値は、モニタプログラムが返値として表示す�
+  60:test.c        **** 
+  61:test.c        **** }
+ 253              		.loc 1 61 0
+ 254 0138 1C009FE5 		ldr	r0, .L10+24
+ 255 013c F84FBDE8 		pop	{r3, r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 256              	.LCFI1:
+ 257              		.cfi_restore 14
+ 258              		.cfi_restore 11
+ 259              		.cfi_restore 10
+ 260              		.cfi_restore 9
+ 261              		.cfi_restore 8
+ 262              		.cfi_restore 7
+ 263              		.cfi_restore 6
+ 264              		.cfi_restore 5
+ 265              		.cfi_restore 4
+ 266              		.cfi_restore 3
+ 267              		.cfi_def_cfa_offset 0
+ 268              	.LVL24:
+ 269              	@ SUCC: EXIT [100.0%] 
+ 270 0140 1EFF2FE1 		bx	lr
+ 271              	.L11:
+ 272              		.align	2
+ 273              	.L10:
+ 274 0144 00000000 		.word	.LC0
+ 275 0148 08000000 		.word	.LC1
+ 276 014c FFCFFF3F 		.word	1073729535
+ 277 0150 0C000000 		.word	.LC2
+ 278 0154 10000000 		.word	.LC3
+ 279 0158 18000000 		.word	.LC4
+ 280 015c 23010000 		.word	291
+ 281              		.cfi_endproc
+ 282              	.LFE1:
+ 284              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 285              		.align	2
+ 286              	.LC0:
+ 287 0000 57616974 		.ascii	"Wait:\000"
+ 287      3A00
+ 288 0006 0000     		.space	2
+ 289              	.LC1:
+ 290 0008 0A4F4B00 		.ascii	"\012OK\000"
+ 291              	.LC2:
+ 292 000c 20256400 		.ascii	" %d\000"
+ 293              	.LC3:
+ 294 0010 48656C6C 		.ascii	"Hello!\000"
+ 294      6F2100
+ 295 0017 00       		.space	1
+ 296              	.LC4:
+ 297 0018 0A00     		.ascii	"\012\000"
+ 298              		.text
+ 299              	.Letext0:
+ 300              		.file 2 "c:\\users\\user\\desktop\\arm-dev\\arm-tools\\arm-none-eabi\\include\\machine\\_default_t
+ 301              		.file 3 "c:\\users\\user\\desktop\\arm-dev\\arm-tools\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 302              		.file 4 "../../include/xprintf.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 test.c
+          obj/test.s:15     .text:00000000 $a
+          obj/test.s:21     .text:00000000 wait_msec
+          obj/test.s:72     .text:00000034 $d
+          obj/test.s:76     .text:00000038 $a
+          obj/test.s:82     .text:00000038 main
+          obj/test.s:274    .text:00000144 $d
+          obj/test.s:285    .rodata.str1.4:00000000 $d
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+LCD_Init
+LCD_Write
+LCD_Puts
+xprintf
+LCD_PutHex

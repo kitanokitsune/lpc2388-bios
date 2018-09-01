@@ -1,0 +1,136 @@
+   1              		.cpu arm7tdmi-s
+   2              		.eabi_attribute 20, 1	@ Tag_ABI_FP_denormal
+   3              		.eabi_attribute 21, 1	@ Tag_ABI_FP_exceptions
+   4              		.eabi_attribute 23, 3	@ Tag_ABI_FP_number_model
+   5              		.eabi_attribute 24, 1	@ Tag_ABI_align8_needed
+   6              		.eabi_attribute 25, 1	@ Tag_ABI_align8_preserved
+   7              		.eabi_attribute 26, 1	@ Tag_ABI_enum_size
+   8              		.eabi_attribute 30, 1	@ Tag_ABI_optimization_goals
+   9              		.eabi_attribute 34, 0	@ Tag_CPU_unaligned_access
+  10              		.eabi_attribute 18, 4	@ Tag_ABI_PCS_wchar_t
+  11              		.file	"test.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.align	2
+  16              		.global	main
+  17              		.syntax unified
+  18              		.arm
+  19              		.fpu softvfp
+  21              	main:
+  22              	.LFB1:
+  23              		.file 1 "test.c"
+  24              		@ test.c:11
+   1:test.c        **** /*
+   2:test.c        ****     Interrupt Test
+   3:test.c        **** */
+   4:test.c        **** 
+   5:test.c        **** #include "bios2388.h"
+   6:test.c        **** #include "xprintf.h"
+   7:test.c        **** #include "isr_timer.h"
+   8:test.c        **** 
+   9:test.c        **** 
+  10:test.c        **** int main(void)
+  11:test.c        **** {
+  25              		.loc 1 11 0
+  26              		.cfi_startproc
+  27              		@ Function supports interworking.
+  28              		@ args = 0, pretend = 0, frame = 0
+  29              		@ frame_needed = 0, uses_anonymous_args = 0
+  30              	@ BLOCK 2 freq:10000 seq:0
+  31              	@ PRED: ENTRY [100.0%]  (FALLTHRU)
+  32 0000 10402DE9 		push	{r4, lr}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 4, -8
+  36              		.cfi_offset 14, -4
+  37              		@ test.c:12
+  12:test.c        ****     xprintf("\nInterrupt Test\n");
+  38              		.loc 1 12 0
+  39 0004 40009FE5 		ldr	r0, .L3
+  40 0008 FEFFFFEB 		bl	xprintf
+  41              	.LVL0:
+  42              		@ test.c:14
+  13:test.c        **** 
+  14:test.c        ****     VIC_Init();
+  43              		.loc 1 14 0
+  44 000c FEFFFFEB 		bl	VIC_Init
+  45              	.LVL1:
+  46              		@ test.c:15
+  15:test.c        ****     Reg_IRQ(INT_TIMER0, (void *)Timer0Handler, VICVPx_LOWEST);
+  47              		.loc 1 15 0
+  48 0010 0F20A0E3 		mov	r2, #15
+  49 0014 34109FE5 		ldr	r1, .L3+4
+  50 0018 0400A0E3 		mov	r0, #4
+  51 001c FEFFFFEB 		bl	Reg_IRQ
+  52              	.LVL2:
+  53              		@ test.c:16
+  16:test.c        ****     InitTimer0(500L*1000L); /* Timer Interval = 0.5sec = 500*1000usec */
+  54              		.loc 1 16 0
+  55 0020 2C009FE5 		ldr	r0, .L3+8
+  56 0024 FEFFFFEB 		bl	InitTimer0
+  57              	.LVL3:
+  58              		@ test.c:17
+  17:test.c        ****     Enable_IRQ(INT_TIMER0);
+  59              		.loc 1 17 0
+  60 0028 0400A0E3 		mov	r0, #4
+  61 002c FEFFFFEB 		bl	Enable_IRQ
+  62              	.LVL4:
+  63              		@ test.c:19
+  18:test.c        **** 
+  19:test.c        ****     FIO1PIN &= ~0x00040000; /* LED On */
+  64              		.loc 1 19 0
+  65 0030 20209FE5 		ldr	r2, .L3+12
+  66 0034 CB3F12E5 		ldr	r3, [r2, #-4043]
+  67 0038 0137C3E3 		bic	r3, r3, #262144
+  68 003c CB3F02E5 		str	r3, [r2, #-4043]
+  69              		@ test.c:22
+  20:test.c        **** 
+  21:test.c        ****     return -1;
+  22:test.c        **** }
+  70              		.loc 1 22 0
+  71 0040 0000E0E3 		mvn	r0, #0
+  72 0044 1040BDE8 		pop	{r4, lr}
+  73              	.LCFI1:
+  74              		.cfi_restore 14
+  75              		.cfi_restore 4
+  76              		.cfi_def_cfa_offset 0
+  77              	@ SUCC: EXIT [100.0%] 
+  78 0048 1EFF2FE1 		bx	lr
+  79              	.L4:
+  80              		.align	2
+  81              	.L3:
+  82 004c 00000000 		.word	.LC0
+  83 0050 00000000 		.word	Timer0Handler
+  84 0054 20A10700 		.word	500000
+  85 0058 FFCFFF3F 		.word	1073729535
+  86              		.cfi_endproc
+  87              	.LFE1:
+  89              		.section	.rodata.str1.4,"aMS",%progbits,1
+  90              		.align	2
+  91              	.LC0:
+  92 0000 0A496E74 		.ascii	"\012Interrupt Test\012\000"
+  92      65727275 
+  92      70742054 
+  92      6573740A 
+  92      00
+  93              		.text
+  94              	.Letext0:
+  95              		.file 2 "c:\\users\\user\\desktop\\arm-dev\\arm-tools\\arm-none-eabi\\include\\machine\\_default_t
+  96              		.file 3 "c:\\users\\user\\desktop\\arm-dev\\arm-tools\\arm-none-eabi\\include\\sys\\_stdint.h"
+  97              		.file 4 "../../include/xprintf.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 test.c
+          obj/test.s:15     .text:00000000 $a
+          obj/test.s:21     .text:00000000 main
+          obj/test.s:82     .text:0000004c $d
+          obj/test.s:90     .rodata.str1.4:00000000 $d
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+xprintf
+VIC_Init
+Reg_IRQ
+InitTimer0
+Enable_IRQ
+Timer0Handler

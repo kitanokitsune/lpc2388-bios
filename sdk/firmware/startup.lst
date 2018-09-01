@@ -1,0 +1,216 @@
+   1              	.equ B_Irq,	0x80
+   2              	.equ B_Fiq,	0x40
+   3              	.equ B_Thumb,	0x20
+   4              	.equ M_USR,	0x10
+   5              	.equ M_FIQ,	0x11
+   6              	.equ M_IRQ,	0x12
+   7              	.equ M_SVC,	0x13
+   8              	.equ M_ABT,	0x17
+   9              	.equ M_UND,	0x1B
+  10              	.equ M_SYS,	0x1F
+  11              	.equ LPC_BASE_VIC,	0xFFFFF000
+  12              	.equ VIC_VectAddr,	0xF00
+  13              	.equ Mode_USR,            0x10
+  14              	.equ Mode_FIQ,            0x11
+  15              	.equ Mode_IRQ,            0x12
+  16              	.equ Mode_SVC,            0x13
+  17              	.equ Mode_ABT,            0x17
+  18              	.equ Mode_UND,            0x1B
+  19              	.equ Mode_SYS,            0x1F
+  20              	/* when I bit is set, IRQ is disabled */
+  21              	.equ I_Bit,               0x80
+  22              	/* when F bit is set, FIQ is disabled */      
+  23              	.equ F_Bit,               0x40
+  24              	/* when T bit is set, Thumb mode */      
+  25              	.equ T_Bit,               0x20
+  26              	
+  27              	
+  28              		.text
+  29              	
+  30              		.extern		main
+  31              		.extern		LPC2388_Initialize
+  32              		.extern		_sp_base
+  33              		.extern		_etext
+  34              		.extern		_sdata
+  35              		.extern		_edata
+  36              		.extern		_sbss
+  37              		.extern		_ebss
+  38              		.extern		_exception_sp_base
+  39              	#======================================
+  40              	#      Initialize vectors
+  41              	#
+  42              	##     0x00 	 Reset
+  43              	##     0x04 	 Undefined Instruction
+  44              	##     0x08 	 Software Interrupt
+  45              	##     0x0c 	 Abort(prefetch)
+  46              	##     0x10 	 Abort(data)
+  47              	##     0x14 	 Reserved
+  48              	##     0x18 	 IRQ
+  49              	##     0x1c 	 FIQ
+  50              	#======================================
+  51              		.global _startup
+  52              	
+  53              		.org 0x0
+  54 0000 FEFFFFEA 		B	_startup
+  55 0004 290000EA 		B	_handler_undef_inst
+  56 0008 280000EA 		B	_handler_swi
+  57 000c 270000EA 		B	_handler_prefetch_abort
+  58 0010 260000EA 		B	_handler_data_abort
+  59 0014 190EE09E 		.word	0x9EE00E19
+  60 0018 20F11FE5 		LDR	pc, [pc, #-0x120]
+  61 001c 230000EA 		B	_handler_fiq
+  62              	
+  63              		.org 0x20
+  64              	_startup:
+  65              		#リセット割り込みのACK（無くても動作するが）
+  66 0020 0000A0E3 		MOV R0, #0
+  67 0024 D4E19FE5 		LDR	LR, =LPC_BASE_VIC
+  68 0028 000F8EE5 		STR	R0, [LR, #VIC_VectAddr]
+  69              	
+  70              		#IRQ通知を受け取るように設定する
+  71 002c 00000FE1 		MRS	R0, cpsr
+  72 0030 800020E2 		eor	R0, R0, #0x80
+  73 0034 00F029E1 		MSR	cpsr, R0
+  74              		#プロセッサモードをIRQモードへ	
+  75 0038 00100FE1 		MRS	r1, CPSR
+  76 003c 1F10C1E3 		BIC	R1, R1, #0x1F
+  77 0040 121081E3 		ORR	R1, R1, #0x12
+  78 0044 01F029E1 		MSR	CPSR, R1
+  79              		#例外ハンドラ用スタックを設定
+  80 0048 B4D19FE5 		LDR	sp, = _exception_sp_base
+  81              	
+  82              		#プロセッサモードをスーパーバイザモードへ戻す
+  83 004c 00100FE1 		MRS	r1, CPSR
+  84 0050 1F10C1E3 		BIC	R1, R1, #0x1F
+  85 0054 131081E3 		ORR	R1, R1, #0x13
+  86 0058 01F029E1 		MSR	CPSR, R1
+  87              	
+  88              		# テンポラリにスタックを設定してデバイス初期化
+  89 005c A4D19FE5 		LDR	R13,=_sp_base
+  90              	.ifdef THUMB
+  91              		LDR     R1,=LPC2388_Initialize
+  92              		ORR     R1, R1 ,#1
+  93              		BLX     R1
+  94              	.else
+  95 0060 FEFFFFEB 		BL	LPC2388_Initialize
+  96              	.endif
+  97              	
+  98              		# Relocate .data section (Copy from ROM to RAM)
+  99 0064 A0119FE5 		LDR     R1, =_etext
+ 100 0068 A0219FE5 		LDR     R2, =_sdata 
+ 101 006c A0319FE5 		LDR     R3, =_edata 
+ 102 0070 030052E1 		CMP     R2, R3
+ 103 0074 0300000A 		BEQ     DataIsEmpty
+ 104              	LoopRel:
+ 105 0078 030052E1 		CMP     R2, R3 
+ 106 007c 04009134 		LDRLO   R0, [R1], #4 
+ 107 0080 04008234 		STRLO   R0, [R2], #4 
+ 108 0084 FBFFFF3A 		BLO     LoopRel 
+ 109              	DataIsEmpty:
+ 110              	 
+ 111              		# Clear .bss section (Zero init)
+ 112 0088 0000A0E3 		MOV     R0, #0 
+ 113 008c 84119FE5 		LDR     R1, =_sbss
+ 114 0090 84219FE5 		LDR     R2, =_ebss 
+ 115 0094 020051E1 		CMP     R1,R2
+ 116 0098 0200000A 		BEQ     BSSIsEmpty
+ 117              	LoopZI:
+ 118 009c 020051E1 		CMP     R1, R2 
+ 119 00a0 04008134 		STRLO   R0, [R1], #4 
+ 120 00a4 FCFFFF3A 		BLO     LoopZI 
+ 121              	BSSIsEmpty:
+ 122              	
+ 123              		# スタックを設定してmainへ
+ 124 00a8 58D19FE5 		LDR	R13,=_sp_base
+ 125              	.ifdef THUMB
+ 126              		LDR     R1,=main
+ 127              		ORR     R1, R1 ,#1
+ 128              		BX      R1
+ 129              	.else
+ 130 00ac FEFFFFEA 		B	main
+ 131              	.endif
+ 132              	
+ 133              	# 例外ハンドル
+ 134              		.align 0x4
+ 135              		# 未使用の割り込み（停止）
+ 136              	_handler_undef_inst:
+ 137              	_handler_swi:
+ 138              	_handler_prefetch_abort:
+ 139              	_handler_data_abort:
+ 140              	_handler_fiq:
+ 141 00b0 FEFFFFEA 		B	_handler_undef_inst
+ 142              	
+ 143              	
+ 144              		.global current_sp
+ 145              	current_sp:
+ 146 00b4 0D00A0E1 		mov	r0, r13
+ 147 00b8 1EFF2FE1 		bx	lr
+ 148              	
+ 149              	
+ 150              	/* LPC2388 Code Read Protection    */
+ 151              	/* 0x11223344 is NO CRP Protection */
+ 152              	
+ 153              		.global _crp
+ 154 00bc 00000000 		.org 0x01FC
+ 154      00000000 
+ 154      00000000 
+ 154      00000000 
+ 154      00000000 
+ 155              	_crp:
+ 156 01fc 44332211 		crp_word:		.word	0x11223344
+ 156      00F0FFFF 
+ 156      00000000 
+ 156      00000000 
+ 156      00000000 
+DEFINED SYMBOLS
+           startup.s:1      *ABS*:00000080 B_Irq
+           startup.s:2      *ABS*:00000040 B_Fiq
+           startup.s:3      *ABS*:00000020 B_Thumb
+           startup.s:4      *ABS*:00000010 M_USR
+           startup.s:5      *ABS*:00000011 M_FIQ
+           startup.s:6      *ABS*:00000012 M_IRQ
+           startup.s:7      *ABS*:00000013 M_SVC
+           startup.s:8      *ABS*:00000017 M_ABT
+           startup.s:9      *ABS*:0000001b M_UND
+           startup.s:10     *ABS*:0000001f M_SYS
+           startup.s:11     *ABS*:fffff000 LPC_BASE_VIC
+           startup.s:12     *ABS*:00000f00 VIC_VectAddr
+           startup.s:13     *ABS*:00000010 Mode_USR
+           startup.s:14     *ABS*:00000011 Mode_FIQ
+           startup.s:15     *ABS*:00000012 Mode_IRQ
+           startup.s:16     *ABS*:00000013 Mode_SVC
+           startup.s:17     *ABS*:00000017 Mode_ABT
+           startup.s:18     *ABS*:0000001b Mode_UND
+           startup.s:19     *ABS*:0000001f Mode_SYS
+           startup.s:21     *ABS*:00000080 I_Bit
+           startup.s:23     *ABS*:00000040 F_Bit
+           startup.s:25     *ABS*:00000020 T_Bit
+           startup.s:64     .text:00000020 _startup
+           startup.s:54     .text:00000000 $a
+           startup.s:136    .text:000000b0 _handler_undef_inst
+           startup.s:137    .text:000000b0 _handler_swi
+           startup.s:138    .text:000000b0 _handler_prefetch_abort
+           startup.s:139    .text:000000b0 _handler_data_abort
+           startup.s:59     .text:00000014 $d
+           startup.s:60     .text:00000018 $a
+           startup.s:140    .text:000000b0 _handler_fiq
+           startup.s:109    .text:00000088 DataIsEmpty
+           startup.s:104    .text:00000078 LoopRel
+           startup.s:121    .text:000000a8 BSSIsEmpty
+           startup.s:117    .text:0000009c LoopZI
+           startup.s:145    .text:000000b4 current_sp
+           startup.s:155    .text:000001fc _crp
+           startup.s:156    .text:000001fc crp_word
+           startup.s:156    .text:000001fc $d
+           startup.s:156    .text:00000200 $d
+
+UNDEFINED SYMBOLS
+_exception_sp_base
+_sp_base
+LPC2388_Initialize
+_etext
+_sdata
+_edata
+_sbss
+_ebss
+main
