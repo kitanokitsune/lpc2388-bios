@@ -1,0 +1,4 @@
+doc/* linguist-vendored
+sdk/firmware/* linguist-vendored
+sdk/application/* linguist-vendored
+sdk/lib/* linguist-vendored
